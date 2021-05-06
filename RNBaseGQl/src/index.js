@@ -1,18 +1,18 @@
 import React from 'react';
-import {View, StyleSheet,Text,} from 'react-native';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/es/integration/react';
+import { View, StyleSheet, Text } from 'react-native';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/es/integration/react';
 import configureStore from './config/configure-store';
 import Root from './Root';
 import Constants from './constants';
 import './utilities/string-en';
-import {Loader} from './components';
-import NetInfo from "@react-native-community/netinfo";
-import NoInternet from '../src/components/common/no-internet'
+import { Loader } from './components';
+import NetInfo from '@react-native-community/netinfo';
+import NoInternet from '../src/components/common/no-internet';
 import { SafeAreaView } from 'react-navigation';
-import { ApolloProvider } from '@apollo/client/react';
+import { ApolloProvider } from 'react-apollo';
 import apolloClient from './apollo';
-const {store, persistor} = configureStore();
+const { store, persistor } = configureStore();
 
 const styles = StyleSheet.create({
   container: {
@@ -25,12 +25,12 @@ class src extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      connection_Status:false
-    }
+      connection_Status: false,
+    };
   }
 
   componentDidMount() {
-   this.checkInternetConnectivity()
+    this.checkInternetConnectivity();
   }
 
   // componentDidUpdate(){
@@ -45,66 +45,58 @@ class src extends React.Component {
   //     });
   //   }
   // }
-  
-  checkInternetConnectivity(){
+
+  checkInternetConnectivity() {
     NetInfo.isConnected.addEventListener(
       'connectionChange',
-      this._handleConnectivityChange
-  );
-  NetInfo.isConnected.fetch().done((isConnected) => {
-
-    if(isConnected == true)
-    {
-      this.setState({connection_Status : true})
-      console.log('stats',this.state.connection_Status)
-    }
-    else
-    {
-      this.setState({connection_Status : false})
-    }
-
-  });
+      this._handleConnectivityChange,
+    );
+    NetInfo.isConnected.fetch().done(isConnected => {
+      if (isConnected == true) {
+        this.setState({ connection_Status: true });
+        console.log('stats', this.state.connection_Status);
+      } else {
+        this.setState({ connection_Status: false });
+      }
+    });
   }
-  
 
   componentWillUnmount() {
- 
     NetInfo.isConnected.removeEventListener(
-        'connectionChange',
-        this._handleConnectivityChange
+      'connectionChange',
+      this._handleConnectivityChange,
     );
-    clearInterval(this.internertCheck)
- 
+    clearInterval(this.internertCheck);
   }
 
-
-  _handleConnectivityChange = (isConnected) => {
- 
-    if(isConnected == true)
-      {
-        this.setState({connection_Status : true})
-      }
-      else
-      {
-        this.setState({connection_Status : false})
-      }
+  _handleConnectivityChange = isConnected => {
+    if (isConnected == true) {
+      this.setState({ connection_Status: true });
+    } else {
+      this.setState({ connection_Status: false });
+    }
   };
 
   render() {
-    const { connection_Status} = this.state;
-    
+    const { connection_Status } = this.state;
+
     return (
       <ApolloProvider client={apolloClient}>
-      <View style={styles.container}>
-        <Provider store={store}>
-          <PersistGate loading={<Loader />} persistor={persistor}>
-          {connection_Status ?
-            <Root />: <NoInternet title={'Lost Internet Connection'} message={'Please connect your internet connection'}/> }
-          </PersistGate>
-        </Provider> 
-      </View>
+        <View style={styles.container}>
+          <Provider store={store}>
+            <PersistGate loading={<Loader />} persistor={persistor}>
+              {connection_Status ? (
+                <Root />
+              ) : (
+                  <NoInternet
+                    title={'Lost Internet Connection'}
+                    message={'Please connect your internet connection'}
+                  />
+                )}
+            </PersistGate>
+          </Provider>
+        </View>
       </ApolloProvider>
-     
     );
   }
 }
