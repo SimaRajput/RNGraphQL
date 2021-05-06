@@ -6,18 +6,17 @@ import {catchError} from '../helper/apiHandler';
 
 const GetMoviesQuery = gql`
   query GetMovies {
-    response: GetMovies {
-      status
-      movies: Movies {
+      movies: movies {
         id
         title
       }
-    }
+    
   }
 `;
 
 export const getMovie = () =>
   toPromise((resolve, reject) => {
+    console.log('resolve',resolve)
     apollo
       .query({
         query: GetMoviesQuery,

@@ -64,35 +64,37 @@ export function* logout() {
   }
 }
 
-export function* getMovies() {
-  yield put(getMoviesRequested());
+// export function* getMovies() {
+//   yield put(getMoviesRequested());
 
-  const {error, result} = yield call(httpClient, {
-    baseURL: 'https://facebook.github.io/react-native/',
-    method: 'get',
-    url: 'movies.json',
-  });
+//   const {error, result} = yield call(httpClient, {
+//     baseURL: 'https://facebook.github.io/react-native/',
+//     method: 'get',
+//     url: 'movies.json',
+//   });
 
-  if (error) {
-    yield put(getMoviesFailure(error));
-  } else {
-    yield put(getMoviesSuccess(result.movies));
-  }
-}
-
-// export function* getMovies({payload}: TAction): TSaga {
-//   try {
-//     const result: TGetSpacesResponse = yield call(getMovie, payload.params);
-//     const reducerResult: TGetSpacesReducerResponse = {
-//       ...result,
-//       ...payload.params
-//     };
-//     yield put(getMoviesSuccess(reducerResult));
-//     // yield put(updateStatus({[GET_SPACES.STATUS]: STATUS.DONE}));
-//   } catch (error) {
+//   if (error) {
 //     yield put(getMoviesFailure(error));
+//   } else {
+//     yield put(getMoviesSuccess(result.movies));
 //   }
 // }
+
+export function* getMovies() {
+  try {
+    const result = yield call(getMovie);
+    // const reducerResult: TGetSpacesReducerResponse = {
+    //   ...result,
+    //   ...payload
+    // };
+    console.log('result',result)
+    yield put(ToastActionsCreators.displayInfo(result));
+    yield put(getMoviesSuccess(reducerResult));
+    // yield put(updateStatus({[GET_SPACES.STATUS]: STATUS.DONE}));
+  } catch (error) {
+    yield put(getMoviesFailure(error));
+  }
+}
 
 
 function* User() {
