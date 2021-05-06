@@ -80,6 +80,21 @@ export function* getMovies() {
   }
 }
 
+// export function* getMovies({payload}: TAction): TSaga {
+//   try {
+//     const result: TGetSpacesResponse = yield call(getMovie, payload.params);
+//     const reducerResult: TGetSpacesReducerResponse = {
+//       ...result,
+//       ...payload.params
+//     };
+//     yield put(getMoviesSuccess(reducerResult));
+//     // yield put(updateStatus({[GET_SPACES.STATUS]: STATUS.DONE}));
+//   } catch (error) {
+//     yield put(getMoviesFailure(error));
+//   }
+// }
+
+
 function* User() {
   yield all([
     takeLatest(GET_MOVIES, getMovies),

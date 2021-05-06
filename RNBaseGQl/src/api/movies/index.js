@@ -25,13 +25,15 @@ export const getMovie = () =>
         fetchPolicy: "no-cache"
       })
       .then(({data}) => {
-        const {status} = data.response;
-        if (status === 200) {
-          resolve(data.response);
-        } else {
-          const message = status === 401 ? "Invalid request" : "Unknow Error";
-          reject(message);
-        }
+        // const {status} = data.response;
+        console.log('data',data)
+        // if (status === 200) {
+          resolve(data);
+        // } 
+        // else {
+        //   const message = status === 401 ? "Invalid request" : "Unknow Error";
+          reject('Invalid Request');
+        // }
       })
       .catch(reject);
   });
