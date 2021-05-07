@@ -21,18 +21,15 @@ export const GetMovie = () =>
     apollo
       .query({
         query: GetMoviesQuery,
-        // variables: {},
+        variables: {},
         fetchPolicy: 'no-cache',
       })
       .then(({ data }) => {
-        // const { status } = data.response;
-        console.log('data', data);
-        // if (status === 200) {
-        //   resolve(data);
-        // } else {
-        //   const message = status === 401 ? 'Invalid request' : 'Unknow Error';
-        //   reject('Invalid Request');
-        // }
+        if (data.launchesPast) {
+          resolve(data.launchesPast);
+        } else {
+          reject('Invalid Request');
+        }
       })
       .catch(reject);
   });
