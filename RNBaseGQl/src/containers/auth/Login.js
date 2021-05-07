@@ -28,6 +28,23 @@ class Login extends React.Component {
     }).isRequired,
   };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { selectedLanguage } = nextProps;
+    if (
+      selectedLanguage &&
+      selectedLanguage.lang &&
+      selectedLanguage.lang !== prevState.selectedLanguage
+    ) {
+      Constants.i18n.setLanguage(selectedLanguage.lang);
+      let isEng = false;
+      if (selectedLanguage.lang === "en") {
+        isEng = true;
+      }
+
+      return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
+    }
+  }
+
   state = {
     password: '',
     username: '',
@@ -200,7 +217,7 @@ class Login extends React.Component {
 ReactMixin(Login.prototype, TimerMixin);
 
 export default connect(
-  ({ user: { deviceToken } }) => ({ deviceToken }),
+  ({ user: { deviceToken },language: { selectedLanguage } }) => ({ deviceToken,selectedLanguage }),
   {
     login: userActions.login,
   }
