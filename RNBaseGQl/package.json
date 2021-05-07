@@ -13,6 +13,7 @@
     "@apollo/client": "^3.3.16",
     "@react-native-community/async-storage": "^1.8.1",
     "@react-native-community/netinfo": "^1.4.0",
+    "apollo-boost": "^0.4.9",
     "axios": "^0.21.1",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",

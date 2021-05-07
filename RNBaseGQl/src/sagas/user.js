@@ -1,108 +1,25 @@
-import {all, call, put, takeLatest} from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import {
-  LOGIN,
-  LOGOUT,
-  loginFailure,
-  loginRequested,
-  loginSuccess,
-  logoutFailure,
-  logoutSuccess,
-  logoutRequested,
-  getMoviesRequested,
   getMoviesFailure,
   getMoviesSuccess,
   GET_MOVIES,
 } from '../actions/user-actions-types';
-import 
-  { getMovie }
- from '../api';
-import httpClient from './http-client';
+import { GetMovie } from '../api';
 
-
-export function* login({
-  payload: {
-    data,callback,
-  },
-}) {
-  yield put(loginRequested());
-  const payload = {
-    data,
-    method: 'post',
-    url: 'http://fakerestapi.azurewebsites.net/api/Users',
-  };
-  const {
-    result, error,
-  } = yield call(httpClient, payload);
-  if (error) {
-    yield put(loginFailure(error));
-    if (callback && error.message === 'Kindly verify your email first to login.') {
-      callback();
-    }
-  } else {
-    yield put(loginSuccess(result));
-  }
-}
-
-
-export function* logout() {
-  yield put(logoutRequested());
-  const token = yield select(({ user: { userDetails: { ID} } }) => ID);
-  const payload = {
-    data: { ID: token },
-    method: 'put',
-    url: '/api/Users',
-  };
-  const {
-    result, error,
-  } = yield call(httpClient, payload);
-
-  if (error) {
-    yield put(logoutFailure(error));
-  } else {
-    yield put(logoutSuccess());
-    yield put(ToastActionsCreators.displayInfo(result.message));
-  }
-}
-
-// export function* getMovies() {
-//   yield put(getMoviesRequested());
-
-//   const {error, result} = yield call(httpClient, {
-//     baseURL: 'https://facebook.github.io/react-native/',
-//     method: 'get',
-//     url: 'movies.json',
-//   });
-
-//   if (error) {
-//     yield put(getMoviesFailure(error));
-//   } else {
-//     yield put(getMoviesSuccess(result.movies));
-//   }
-// }
-
-export function* getMovies() {
+function* getMovies() {
+  console.log('bdsgjjksdhk');
   try {
-    const result = yield call(getMovie);
-    // const reducerResult: TGetSpacesReducerResponse = {
-    //   ...result,
-    //   ...payload
-    // };
-    console.log('result',result)
-    yield put(ToastActionsCreators.displayInfo(result));
-    yield put(getMoviesSuccess(reducerResult));
-    // yield put(updateStatus({[GET_SPACES.STATUS]: STATUS.DONE}));
+    const result = yield call(GetMovie);
+    // console.log('result saga=', JSON.stringify(result));
+    // yield put(getMoviesSuccess(result.movies));
   } catch (error) {
-    yield put(getMoviesFailure(error));
+    console.log('error', error);
+    // yield put(getMoviesFailure({ error }));
   }
 }
-
 
 function* User() {
-  yield all([
-    takeLatest(GET_MOVIES, getMovies),
-    takeLatest(LOGIN, login),
-    takeLatest(LOGOUT, logout),
-  ]);
+  yield all([takeLatest(GET_MOVIES, getMovies)]);
 }
 
 export default User;

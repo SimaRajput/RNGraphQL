@@ -4,11 +4,11 @@ import TimerMixin from 'react-timer-mixin';
 import ReactMixin from 'react-mixin';
 import { arrayOf, shape, string, func } from 'prop-types';
 import { connect } from 'react-redux';
-import {AuthStyles} from '../../styles';
-import {Button} from '../../components';
+import { AuthStyles } from '../../styles';
+import { Button } from '../../components';
 import Constants from '../../constants';
 import * as userActions from '../../actions/user-actions-types';
-import {logoutSuccess} from '../../actions/user-actions-types';
+import { logoutSuccess } from '../../actions/user-actions-types';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,47 +20,29 @@ const styles = StyleSheet.create({
 });
 
 class Home extends React.Component {
-  
-  
   componentDidMount() {
     const { getMovies } = this.props;
+    console.log('hfagjhjkf');
     getMovies();
   }
 
-
-  onLogout = () => {
-    alert('dfjbs')
-    // const { logoutSuccess } = this.props;
-    logoutSuccess();
-  }
-  
   render() {
-    const { movies,userDetails } = this.props;
+    const { movies } = this.props;
 
     return (
       <View style={styles.container}>
         <FlatList
           style={styles.container}
           data={movies}
-          renderItem={({
-            item: {
-              title, releaseYear,
-            },
-          }) => (
+          renderItem={({ item: { title, releaseYear } }) => (
             <View style={styles.rowStyle}>
               <Text style={styles.textStyle}>{title}</Text>
               <Text style={styles.textStyle}>
                 {`Release Year: ${releaseYear}`}
               </Text>
-              
             </View>
           )}
         />
-        {/* <Button
-              onPress={this.onLogout}
-              style={AuthStyles.logOutbuttonStyle}
-              title={'Logout'}
-            /> */}
       </View>
     );
   }
@@ -70,9 +52,8 @@ Home.propTypes = {
   getMovies: func.isRequired,
   movies: arrayOf(
     shape({
-      releaseYear: string.isRequired,
       title: string.isRequired,
-    })
+    }),
   ).isRequired,
 };
 
@@ -80,7 +61,6 @@ ReactMixin(Home.prototype, TimerMixin);
 
 const mapStateToProps = ({ user: { movies } }) => ({ movies });
 
-export default connect(
-  mapStateToProps,
-  { getMovies: userActions.getMovies },
-)(Home);
+export default connect(mapStateToProps, { getMovies: userActions.getMovies })(
+  Home,
+);
