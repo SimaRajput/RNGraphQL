@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
 class Home extends React.Component {
   componentDidMount() {
     const { getMovies } = this.props;
-    console.log('hfagjhjkf');
     getMovies();
   }
 
@@ -34,11 +33,11 @@ class Home extends React.Component {
         <FlatList
           style={styles.container}
           data={movies}
-          renderItem={({ item: { title, releaseYear } }) => (
+          renderItem={({ item: { mission_name, launch_date_local } }) => (
             <View style={styles.rowStyle}>
-              <Text style={styles.textStyle}>{title}</Text>
+              <Text style={styles.textStyle}>{mission_name}</Text>
               <Text style={styles.textStyle}>
-                {`Release Year: ${releaseYear}`}
+                {`Release Year: ${launch_date_local}`}
               </Text>
             </View>
           )}

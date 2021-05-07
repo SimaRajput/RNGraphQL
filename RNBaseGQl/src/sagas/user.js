@@ -7,14 +7,11 @@ import {
 import { GetMovie } from '../api';
 
 function* getMovies() {
-  console.log('bdsgjjksdhk');
   try {
     const result = yield call(GetMovie);
-    // console.log('result saga=', JSON.stringify(result));
-    // yield put(getMoviesSuccess(result.movies));
+    yield put(getMoviesSuccess(result));
   } catch (error) {
-    console.log('error', error);
-    // yield put(getMoviesFailure({ error }));
+    yield put(getMoviesFailure({ error }));
   }
 }
 
