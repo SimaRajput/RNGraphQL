@@ -1,36 +1,37 @@
-import {moderateScale} from '../utilities/responsive-fonts';
+import { Platform } from 'react-native';
+import { moderateScale } from '../utilities/responsive-fonts';
 
 const Fonts = {
   extraLarge: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: Platform.OS === 'ios' ? undefined : 'OpenSans-Regular',
     fontSize: moderateScale(18),
   },
   extraLargeBold: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: Platform.OS === 'ios' ? undefined : 'OpenSans-Bold',
     fontSize: moderateScale(18),
   },
   header: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: Platform.OS === 'ios' ? undefined : 'OpenSans-Regular',
     fontSize: moderateScale(20),
   },
   headerBold: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: Platform.OS === 'ios' ? undefined : 'OpenSans-Bold',
     fontSize: moderateScale(20),
   },
   large: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: Platform.OS === 'ios' ? undefined : 'OpenSans-Regular',
     fontSize: moderateScale(16),
   },
   largeBold: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: Platform.OS === 'ios' ? undefined : 'OpenSans-Bold',
     fontSize: moderateScale(16),
   },
   regular: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: Platform.OS === 'ios' ? undefined : 'OpenSans-Regular',
     fontSize: moderateScale(14),
   },
   regularBold: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: Platform.OS === 'ios' ? undefined : 'OpenSans-Bold',
     fontSize: moderateScale(14),
   },
 };

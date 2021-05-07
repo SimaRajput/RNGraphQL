@@ -8,9 +8,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemContainer: {
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center'
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textStyle: {
     ...Constants.Fonts.extraLargeBold,
@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const Profile = () => 
-<View style={styles.container}>
-<View style={styles.itemContainer}>
-<Text style={styles.textStyle}> Profile Screen </Text>
-</View>
-</View>;
+const Profile = () =>
+  <View style={styles.container}>
+    <View style={styles.itemContainer}>
+      <Text style={styles.textStyle}> Profile Screen </Text>
+    </View>
+  </View>;
 
 export default Profile;
