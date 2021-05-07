@@ -30,6 +30,7 @@ class Home extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
+          keyExtractor={(item, index) => `${index}`}
           style={styles.container}
           data={missions}
           renderItem={({ item: { mission_name, launch_date_local } }) => (
@@ -50,7 +51,7 @@ Home.propTypes = {
   getMission: func.isRequired,
   missions: arrayOf(
     shape({
-      title: string.isRequired,
+      mission_name: string.isRequired,
     }),
   ).isRequired,
 };
