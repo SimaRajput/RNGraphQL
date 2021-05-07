@@ -34,6 +34,7 @@
     "react-native-iphone-x-helper": "^1.2.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-loading-spinner-overlay": "^1.0.1",
+    "react-native-localization": "^2.1.7",
     "react-native-lottie-loader": "0.0.6",
     "react-native-navbar": "^2.1.0",
     "react-native-redux-toast": "^1.0.3",
