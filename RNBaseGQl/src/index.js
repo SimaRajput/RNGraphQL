@@ -79,7 +79,6 @@ class src extends React.Component {
 
   render() {
     const { connection_Status } = this.state;
-
     return (
       <ApolloProvider client={apolloClient}>
         <View style={styles.container}>

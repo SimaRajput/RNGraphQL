@@ -1,7 +1,7 @@
 // @flow
 // import ApolloClient, {InMemoryCache} from "apollo-boost";
 import api from '../config/api';
-import { getDefaultHeaders } from '../api/helper/urlHelper';
+// import { getDefaultHeaders } from '../api/helper/urlHelper';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
 
 const defaultOptions = {

@@ -1,23 +1,23 @@
 // @flow
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 const defaultServer = 'development';
 
 export const apiURLs = {
   development: {
-    baseURL: 'https://facebook.github.io/react-native/movies.json'
+    baseURL: 'https://api.spacex.land/graphql/',
   },
   production: {
-    baseURL: 'https://facebook.github.io/react-native/movies.jsonl'
+    baseURL: 'https://api.spacex.land/graphql/',
   },
   staging: {
-    baseURL: 'https://facebook.github.io/react-native/movies.json'
-  }
+    baseURL: 'https://api.spacex.land/graphql/',
+  },
 };
 
 export const authToken = 'rngraphql_$2021';
 
-const api = function() {
+const api = function () {
   const api = apiURLs[defaultServer];
   if (!api) {
     Alert.alert('Error', 'Invalid default configuration /config/api.js');

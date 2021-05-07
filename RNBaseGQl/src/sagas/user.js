@@ -4,17 +4,17 @@ import {
   getMoviesSuccess,
   GET_MOVIES,
 } from '../actions/user-actions-types';
-import { getMovie } from '../api';
+import { GetMovie } from '../api';
 
-function* getMovies({ payload }) {
+function* getMovies() {
   console.log('bdsgjjksdhk');
   try {
-    const result = yield call(getMovie, payload);
-    console.log('result saga=', JSON.stringify(result));
-    yield put(getMoviesSuccess(result.movies));
+    const result = yield call(GetMovie);
+    // console.log('result saga=', JSON.stringify(result));
+    // yield put(getMoviesSuccess(result.movies));
   } catch (error) {
     console.log('error', error);
-    yield put(getMoviesFailure({ error }));
+    // yield put(getMoviesFailure({ error }));
   }
 }
 

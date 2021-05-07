@@ -4,18 +4,18 @@ import apollo from '../../apollo';
 import toPromise from '../../utilities/toPromise';
 
 const GetMoviesQuery = gql`
-  query GetMovies {
-    response: GetMovies {
-      status
-      movies: Movies {
-        id
-        title
+  query {
+    launchesPast(limit: 10) {
+      mission_name
+      launch_date_local
+      launch_site {
+        site_name_long
       }
     }
   }
 `;
 
-export const getMovie = () =>
+export const GetMovie = () =>
   toPromise((resolve, reject) => {
     apollo
       .query({
@@ -24,14 +24,14 @@ export const getMovie = () =>
         fetchPolicy: 'no-cache',
       })
       .then(({ data }) => {
-        const { status } = data.response;
+        // const { status } = data.response;
         console.log('data', data);
-        if (status === 200) {
-          resolve(data);
-        } else {
-          const message = status === 401 ? 'Invalid request' : 'Unknow Error';
-          reject('Invalid Request');
-        }
+        // if (status === 200) {
+        //   resolve(data);
+        // } else {
+        //   const message = status === 401 ? 'Invalid request' : 'Unknow Error';
+        //   reject('Invalid Request');
+        // }
       })
       .catch(reject);
   });
