@@ -13,7 +13,6 @@ const GetMissionsQuery = gql`
       }
     }
   }
-}
 `;
 
 export const GetMission = () =>
