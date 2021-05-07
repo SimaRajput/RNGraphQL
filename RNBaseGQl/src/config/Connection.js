@@ -6,7 +6,7 @@ const mediaBaseUrl = `http://${runningUrl}/api/util/file/`;
 
 export default class Connection {
   static getBaseUrl() {
-    return 'https://facebook.github.io/react-native/movies.json';
+    return 'https://api.spacex.land/graphql/';
   }
 
   static getMedia(id) {

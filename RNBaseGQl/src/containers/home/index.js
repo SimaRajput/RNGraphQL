@@ -7,8 +7,7 @@ import { connect } from 'react-redux';
 import { AuthStyles } from '../../styles';
 import { Button } from '../../components';
 import Constants from '../../constants';
-import * as userActions from '../../actions/user-actions-types';
-import { logoutSuccess } from '../../actions/user-actions-types';
+import * as homeActions from '../../actions/home-actions-types';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,18 +20,19 @@ const styles = StyleSheet.create({
 
 class Home extends React.Component {
   componentDidMount() {
-    const { getMovies } = this.props;
-    getMovies();
+    const { getMission } = this.props;
+    getMission();
   }
 
   render() {
-    const { movies } = this.props;
+    const { missions } = this.props;
 
     return (
       <View style={styles.container}>
         <FlatList
+          keyExtractor={(item, index) => `${index}`}
           style={styles.container}
-          data={movies}
+          data={missions}
           renderItem={({ item: { mission_name, launch_date_local } }) => (
             <View style={styles.rowStyle}>
               <Text style={styles.textStyle}>{mission_name}</Text>
@@ -48,18 +48,18 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  getMovies: func.isRequired,
-  movies: arrayOf(
+  getMission: func.isRequired,
+  missions: arrayOf(
     shape({
-      title: string.isRequired,
+      mission_name: string.isRequired,
     }),
   ).isRequired,
 };
 
 ReactMixin(Home.prototype, TimerMixin);
 
-const mapStateToProps = ({ user: { movies } }) => ({ movies });
+const mapStateToProps = ({ home: { missions } }) => ({ missions });
 
-export default connect(mapStateToProps, { getMovies: userActions.getMovies })(
+export default connect(mapStateToProps, { getMission: homeActions.getMission })(
   Home,
 );

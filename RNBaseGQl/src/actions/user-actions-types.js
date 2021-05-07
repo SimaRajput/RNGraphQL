@@ -1,17 +1,5 @@
 import { createAction } from 'redux-actions';
 
-export const GET_MOVIES = 'GET_MOVIES';
-export const getMovies = createAction(GET_MOVIES);
-
-export const GET_MOVIES_FAILURE = 'GET_MOVIES_FAILURE';
-export const getMoviesFailure = createAction(GET_MOVIES_FAILURE);
-
-export const GET_MOVIES_REQUESTED = 'GET_MOVIES_REQUESTED';
-export const getMoviesRequested = createAction(GET_MOVIES_REQUESTED);
-
-export const GET_MOVIES_SUCCESS = 'GET_MOVIES_SUCCESS';
-export const getMoviesSuccess = createAction(GET_MOVIES_SUCCESS);
-
 export const LOGIN = 'LOGIN';
 export const login = createAction(LOGIN);
 

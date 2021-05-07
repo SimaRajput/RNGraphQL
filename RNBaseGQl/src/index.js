@@ -9,7 +9,6 @@ import './utilities/string-en';
 import { Loader } from './components';
 import NetInfo from '@react-native-community/netinfo';
 import NoInternet from '../src/components/common/no-internet';
-import { SafeAreaView } from 'react-navigation';
 import { ApolloProvider } from 'react-apollo';
 import apolloClient from './apollo';
 const { store, persistor } = configureStore();
@@ -87,11 +86,11 @@ class src extends React.Component {
               {connection_Status ? (
                 <Root />
               ) : (
-                  <NoInternet
-                    title={'Lost Internet Connection'}
-                    message={'Please connect your internet connection'}
-                  />
-                )}
+                <NoInternet
+                  title={'Lost Internet Connection'}
+                  message={'Please connect your internet connection'}
+                />
+              )}
             </PersistGate>
           </Provider>
         </View>

@@ -37,6 +37,7 @@
     "react-native-localization": "^2.1.7",
     "react-native-lottie-loader": "0.0.6",
     "react-native-navbar": "^2.1.0",
+    "react-native-network-bandwith-speed": "^3.0.0",
     "react-native-redux-toast": "^1.0.3",
     "react-native-safe-module": "^1.2.0",
     "react-native-screens": "^2.2.0",
@@ -48,7 +49,8 @@
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
     "redux-persist": "^5.10.0",
-    "redux-saga": "^0.16.2"
+    "redux-saga": "^0.16.2",
+    "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "7.14.0",

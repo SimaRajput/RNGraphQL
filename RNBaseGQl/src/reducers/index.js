@@ -5,6 +5,7 @@ import app from './app';
 import nav from './nav';
 import user from './user';
 import language from './language';
+import home from './home';
 
 const config = {
   blacklist: ['app', 'nav', 'toast'],
@@ -18,6 +19,7 @@ const reducers = persistCombineReducers(config, {
   toast,
   user,
   language,
+  home
 });
 
 export default reducers;

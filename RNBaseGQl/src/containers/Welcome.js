@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import TimerMixin from "react-timer-mixin";
 import ReactMixin from "react-mixin";
 import * as updateLanguageActions from "../actions/update-language-types";
+import { measureConnectionSpeed } from 'react-native-network-bandwith-speed';
 
 
 class Welcome extends PureComponent {
@@ -17,6 +18,10 @@ class Welcome extends PureComponent {
       navigate: func.isRequired,
     }).isRequired,
   };
+
+  componentDidMount(){
+    this.getNetworkBandwidth()
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { selectedLanguage } = nextProps;
@@ -34,6 +39,16 @@ class Welcome extends PureComponent {
       return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
     }
   }
+  
+  getNetworkBandwidth = async () => {
+    try {
+      const networkSpeed = await measureConnectionSpeed();
+      console.log('networkSpeed',networkSpeed); // Network bandwidth speed 
+    } catch (err) {
+      console.log(err);  
+    }
+  }
+  
   constructor(props) {
     super(props);
     let isEng = false;
