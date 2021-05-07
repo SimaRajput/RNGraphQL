@@ -1,7 +1,6 @@
 // @flow
-// import ApolloClient, {InMemoryCache} from "apollo-boost";
 import api from '../config/api';
-// import { getDefaultHeaders } from '../api/helper/urlHelper';
+import { getDefaultHeaders } from '../api/helper/urlHelper';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
 
 const defaultOptions = {
@@ -16,10 +15,10 @@ const defaultOptions = {
 };
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  // fetchOptions: {
-  //   credentials: 'include',
-  // },
-  // defaultOptions,
+  fetchOptions: {
+    credentials: 'include',
+  },
+  defaultOptions,
   // request: async operation => {
   //   const { operationName: operationname } = operation;
   //   const defaultHeaders = await getDefaultHeaders(operationname);

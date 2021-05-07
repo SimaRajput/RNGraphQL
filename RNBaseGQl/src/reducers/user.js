@@ -19,7 +19,7 @@ export default function user(state = initialState, { payload, type }) {
     case GET_MOVIES_SUCCESS:
       return {
         ...state,
-        movies: uniqBy([...state.movies, ...payload], 'id'),
+        movies: uniqBy([...state.movies, ...payload], 'mission_name'),
       };
 
     case LOGIN_SUCCESS:
