@@ -3,7 +3,7 @@
 
 export default class Connection {
   static getBaseUrl() {
-    return "https://facebook.github.io/react-native/movies.json";
+    return "https://api.spacex.land/graphql/";
   }
 
   static getMedia(id) {
@@ -16,28 +16,28 @@ export default class Connection {
 }
 
 let Regex = {
-  validateEmail: function(val) {
+  validateEmail: function (val) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
       val
     );
   },
 
-  validateEmoji: function(text) {
+  validateEmoji: function (text) {
     let reg = /[\uD83C-\uDBFF\uDC00-\uDFFF]+/g;
     return reg.test(text);
   },
 
-  validateMobile: function(text) {
+  validateMobile: function (text) {
     return /^\+(?:[0-9] ?){6,14}[0-9]$/.test(text);
   },
 
-  validateMobileWithoutCC: function(val) {
+  validateMobileWithoutCC: function (val) {
     return /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/.test(
       val
     );
   },
 
-  validateString: function(val) {
+  validateString: function (val) {
     let stringRegex = /^[a-zA-Z\x20]{3,25}$/;
     let emogiRegex = /[\uD83C-\uDBFF\uDC00-\uDFFF]+/g;
     if (stringRegex.test(val.trim())) {
@@ -46,7 +46,7 @@ let Regex = {
     return false;
   },
 
-  validateCityState: function(val) {
+  validateCityState: function (val) {
     let stringRegex = /^[a-zA-Z\x20]{2,50}$/;
     let emogiRegex = /[\uD83C-\uDBFF\uDC00-\uDFFF]+/g;
     if (stringRegex.test(val.trim())) {
@@ -55,15 +55,15 @@ let Regex = {
     return false;
   },
 
-  validatePassword: function(val) {
+  validatePassword: function (val) {
     return /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]\S{5,16}$/.test(val);
   },
 
-  validateNumbers: function(val) {
+  validateNumbers: function (val) {
     return /^[0-9]{0,}$/.test(val);
   },
 
-  validateURL: function(url) {
+  validateURL: function (url) {
     return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/.test(
       url
     );

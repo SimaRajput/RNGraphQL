@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import apollo from '../../apollo';
 import toPromise from '../../utilities/toPromise';
 
-const GetMoviesQuery = gql`
+const GetMissionsQuery = gql`
   query {
     launchesPast(limit: 10) {
       mission_name
@@ -11,16 +11,16 @@ const GetMoviesQuery = gql`
       launch_site {
         site_name_long
       }
-    
+    }
   }
 `;
 
-export const GetMovie = () =>
+export const GetMission = () =>
   toPromise((resolve, reject) => {
     console.log('resolve', resolve)
     apollo
       .query({
-        query: GetMoviesQuery,
+        query: GetMissionsQuery,
         variables: {},
         fetchPolicy: 'no-cache',
       })
