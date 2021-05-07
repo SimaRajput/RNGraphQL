@@ -5,14 +5,14 @@ const defaultServer = 'development';
 
 export const apiURLs = {
   development: {
-    baseURL: 'https://facebook.github.io/react-native/movies.json'
+    baseURL: 'https://api.spacex.land/graphql/',
   },
   production: {
-    baseURL: 'https://facebook.github.io/react-native/movies.json'
+    baseURL: 'https://api.spacex.land/graphql/',
   },
   staging: {
-    baseURL: 'https://facebook.github.io/react-native/movies.json'
-  }
+    baseURL: 'https://api.spacex.land/graphql/',
+  },
 };
 
 export const authToken = 'rngraphql_$2021';
