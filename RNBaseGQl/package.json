@@ -44,8 +44,8 @@
     "react-native-navbar": "^2.1.0",
     "react-native-network-bandwith-speed": "^3.0.0",
     "react-native-reanimated": "^2.1.0",
-    "react-native-redux-toast": "^1.0.3",
     "react-native-safe-area-context": "^3.2.0",
+    "react-native-redux-toast": "file:./updated_modules/react-native-redux-toast",
     "react-native-safe-module": "^1.2.0",
     "react-native-screens": "^2.2.0",
     "react-native-vector-icons": "^6.6.0",
@@ -56,7 +56,7 @@
     "redux-actions": "^2.6.4",
     "redux-persist": "^5.10.0",
     "redux-saga": "^0.16.2",
-    "rn-fetch-blob": "^0.12.0"
+    "rn-fetch-blob": "file:./updated_modules/rn-fetch-blob"
   },
   "devDependencies": {
     "@babel/core": "7.14.0",
