@@ -45,17 +45,17 @@ const styles = StyleSheet.create({
     },
   
     selectedLangBtnText: {
-      color: '#000',
+      color: Constants.Colors.BLACK,
       fontSize: 14,
       fontFamily: "Helvetica Neue",
     },
     selectLanguageText: {
-      color: '#000',
+      color: Constants.Colors.BLACK,
       fontSize: 14,
     },
   
     langBtnText: {
-      color: '#000',
+      color: Constants.Colors.BLACK,
       fontSize: 14,
     },
   });
