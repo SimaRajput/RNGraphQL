@@ -16,6 +16,7 @@ import Home from '../containers/home';
 import Messages from '../containers/messages';
 import More from '../containers/more';
 import Profile from '../containers/profile';
+import { connect } from 'react-redux'
 
 const styles = StyleSheet.create({
   logo: {
@@ -30,8 +31,10 @@ const Tab = createBottomTabNavigator();
 
 
 
-function App() {
+function App(props) {
   const [initialRoute, setInitialRoute] = useState('Home');
+  console.log(props,'hdhdh')
+  const { userDetails } = props;
 
   function Dashboard() {
     return (
@@ -117,6 +120,8 @@ function App() {
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator>
+          {userDetails ? 
+          <>
           <Stack.Screen
             name="Welcome"
             component={Welcome}
@@ -140,18 +145,20 @@ function App() {
           <Stack.Screen name="ChangePassword" component={ChangePassword}
           options={{
             headerShown: false,
-          }} />
+          }} /> </> :
           <Stack.Screen
             name="Dashboard"
             component={Dashboard}
             options={{
               headerShown: false,
             }}
-          />
+          />}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );
 }
+export default connect( ({user: { userDetails } }) => ({ userDetails }),
 
-export default App;
+)(App)
+
