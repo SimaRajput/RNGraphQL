@@ -10,14 +10,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
-import {func, shape} from 'prop-types';
+import { func, shape } from 'prop-types';
 import TimerMixin from 'react-timer-mixin';
 import ReactMixin from 'react-mixin';
-import {ToastActionsCreators} from 'react-native-redux-toast';
+import { ToastActionsCreators } from 'react-native-redux-toast';
 import Regex from '../../utilities/Regex';
 import Constants from '../../constants';
-import {AuthStyles} from '../../styles';
-import {Button, TextInput} from '../../components';
+import { connect } from 'react-redux';
+import { AuthStyles } from '../../styles';
+import { Button, TextInput } from '../../components';
 
 class Signup extends React.Component {
   static propTypes = {
@@ -27,6 +28,23 @@ class Signup extends React.Component {
       navigate: func.isRequired,
     }).isRequired,
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { selectedLanguage } = nextProps;
+    if (
+      selectedLanguage &&
+      selectedLanguage.lang &&
+      selectedLanguage.lang !== prevState.selectedLanguage
+    ) {
+      Constants.i18n.setLanguage(selectedLanguage.lang);
+      let isEng = false;
+      if (selectedLanguage.lang === "en") {
+        isEng = true;
+      }
+
+      return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
+    }
+  }
 
   state = {
     email: '',
@@ -42,9 +60,9 @@ class Signup extends React.Component {
   onSubmit = () => {
     Keyboard.dismiss();
 
-    const {email, password} = this.state;
+    const { email, password } = this.state;
     const {
-      navigation: {dispatch, navigate},
+      navigation: { dispatch, navigate },
     } = this.props;
     const {
       enterEmail,
@@ -103,13 +121,13 @@ class Signup extends React.Component {
   };
 
   render() {
-    const {email, password} = this.state;
+    const { email, password } = this.state;
     const {
-      navigation: {navigate},
+      navigation: { navigate },
     } = this.props;
     const {
-      common: {emailAddress, password: passwordText, or},
-      signup: {alreadyUser, createAccount},
+      common: { emailAddress, password: passwordText, or },
+      signup: { alreadyUser, createAccount },
     } = Constants.i18n;
 
     return (
@@ -132,7 +150,7 @@ class Signup extends React.Component {
               value={email}
               placeholder={emailAddress}
               returnKeyType="next"
-              onChangeText={value => this.setState({email: value})}
+              onChangeText={value => this.setState({ email: value })}
               onFocus={() => {
                 this.handleScrollView(findNodeHandle(this.emailRef.current));
               }}
@@ -148,7 +166,7 @@ class Signup extends React.Component {
               returnKeyType="done"
               secureTextEntry
               maxLength={16}
-              onChangeText={pass => this.setState({password: pass})}
+              onChangeText={pass => this.setState({ password: pass })}
               onFocus={() => {
                 this.handleScrollView(findNodeHandle(this.passwordRef.current));
               }}
@@ -179,4 +197,8 @@ class Signup extends React.Component {
 }
 ReactMixin(Signup.prototype, TimerMixin);
 
-export default Signup;
+const mapStateToProps = ({ user: { deviceToken },
+  language: { selectedLanguage }
+}) => ({ deviceToken, selectedLanguage });
+
+export default connect(mapStateToProps)(Signup);

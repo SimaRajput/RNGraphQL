@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Image,TouchableOpacity,Text } from 'react-native';
+import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { func, shape } from 'prop-types';
 import Constants from '../constants';
 import { WelcomeStyles } from '../styles';
@@ -19,7 +19,7 @@ class Welcome extends PureComponent {
     }).isRequired,
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this.getNetworkBandwidth()
   }
 
@@ -39,16 +39,16 @@ class Welcome extends PureComponent {
       return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
     }
   }
-  
+
   getNetworkBandwidth = async () => {
     try {
       const networkSpeed = await measureConnectionSpeed();
-      console.log('networkSpeed',networkSpeed); // Network bandwidth speed 
+      console.log('networkSpeed', networkSpeed); // Network bandwidth speed 
     } catch (err) {
-      console.log(err);  
+      console.log(err);
     }
   }
-  
+
   constructor(props) {
     super(props);
     let isEng = false;
@@ -74,7 +74,7 @@ class Welcome extends PureComponent {
     };
     this.props?.updateAppLanguage(data);
   }
-  
+
 
   setENLanguage() {
     this.setState(
@@ -102,7 +102,7 @@ class Welcome extends PureComponent {
       }
     );
   }
-  
+
   async updatelangData(data) {
     const { selectedLanguage } = this.props;
     await this.props?.updateAppLanguage(data);
@@ -165,14 +165,14 @@ class Welcome extends PureComponent {
 
     const {
       common: {
-      LoginBtnTitle,
-       signupBtnTitle,
+        LoginBtnTitle,
+        signupBtnTitle,
       },
     } = Constants.i18n;
 
     return (
       <View style={WelcomeStyles.container}>
-            {this.renderlangBtn()}
+        {this.renderlangBtn()}
         <View style={WelcomeStyles.content}>
           <Image
             resizeMode="contain"
@@ -194,8 +194,6 @@ class Welcome extends PureComponent {
     );
   }
 }
-
-// export default Welcome;
 
 ReactMixin(Welcome.prototype, TimerMixin);
 
