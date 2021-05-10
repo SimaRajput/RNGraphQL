@@ -3,7 +3,7 @@ import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from '../reducers';
 import sagas from '../sagas';
-// import { routerMiddleware } from './navigator';
+import { routerMiddleware } from './navigator';
 
 const ConfigureStore = () => {
   let composeEnhancers = compose;
@@ -15,7 +15,7 @@ const ConfigureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(
     rootReducer,
-    composeEnhancers(applyMiddleware(sagaMiddleware)),
+    composeEnhancers(applyMiddleware(routerMiddleware, sagaMiddleware)),
   );
   const persistor = persistStore(store);
 
