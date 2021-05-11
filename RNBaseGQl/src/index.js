@@ -35,26 +35,13 @@ class src extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      connection_Status: false,
+      connection_Status:  true,
     };
   }
 
   componentDidMount() {
     this.checkInternetConnectivity();
   }
-
-  // componentDidUpdate(){
-  //   const {connection_Status} =this.state
-  //   if(connection_Status !== true){
-  //     console.log(connection_Status,"connection_Status")
-  //  this.internertCheck =setInterval(() => {
-  //   console.log(connection_Status,"connection_Status1")
-  //       this.checkInternetConnectivity()
-  //     }, 2000,()=>{
-  //       clearInterval(this.internertCheck)
-  //     });
-  //   }
-  // }
 
   checkInternetConnectivity() {
     NetInfo.isConnected.addEventListener(
