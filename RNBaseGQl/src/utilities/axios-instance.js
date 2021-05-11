@@ -1,9 +1,9 @@
 import axios from 'axios';
 import Idx from 'idx';
-import Connection from '../config/Connection';
+// import Connection from '../config/Connection';
 
 const AxiosInstance = axios.create({
-  baseURL: `${Connection.getBaseUrl()}/api/`,
+  baseURL: `https://reactnative.dev/`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

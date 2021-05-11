@@ -1,29 +1,42 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
 import Constants from '../../constants';
+import * as homeActions from '../../actions/home-actions-types';
+import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Constants.Colors.DASHBOARD_BG_COLOR,
     flex: 1,
   },
-  itemContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  textStyle: {
-    ...Constants.Fonts.extraLargeBold,
-    color: Constants.Colors.BLACK,
-    marginTop: (Constants.BaseStyle.DEVICE_HEIGHT / 100) * 2,
-  }
+  rowStyle: { padding: Constants.BaseStyle.PADDING },
+  textStyle: { ...Constants.Fonts.regular },
 });
 
-const Profile = () =>
-  <View style={styles.container}>
-    <View style={styles.itemContainer}>
-      <Text style={styles.textStyle}> Profile Screen </Text>
-    </View>
-  </View>;
+function Profile(props) {
+  const { movies } = props;
+  useEffect(() => {
+    const {
+      getMovies
+    } = props;
+    getMovies();
+  }, [])
 
-export default Profile;
+  return (
+    <FlatList
+      keyExtractor={(item, index) => `${item.id}`}
+      style={styles.container}
+      data={movies}
+      renderItem={({ item: { title, releaseYear } }) => (
+        <View style={styles.rowStyle}>
+          <Text style={styles.textStyle}>{title}</Text>
+          <Text style={styles.textStyle}>
+            {`Release Year: ${releaseYear}`}
+          </Text>
+        </View>
+      )}
+    />
+  )
+}
+const mapStateToProps = ({ home: { movies } }) => ({ movies });
+export default connect(mapStateToProps, { getMovies: homeActions.getMovies })(Profile);
