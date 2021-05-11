@@ -1,6 +1,6 @@
 // @flow
 
-import { CommonActions } from '@react-navigation/native';
+import {NavigationActions} from 'react-navigation';
 import {Alert} from 'react-native';
 import store from '../../config/configure-store';
 
@@ -12,7 +12,7 @@ export const catchError = (onSuccess: Function, onError: Function) => ({data}: a
     let message = status === 401 ? 'Unauthorised Request' : 'Unknow Error';
     // Logout user now if status is 401
     if (status === 401) {
-      store.dispatch(CommonActions.navigate({routeName: 'Auth'}));
+      store.dispatch(NavigationActions.navigate({routeName: 'Auth'}));
     }
     if (data.response.message) message = data.response.message;
     if(status === 400) {
