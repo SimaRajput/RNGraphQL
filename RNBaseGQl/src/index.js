@@ -11,12 +11,23 @@ import NetInfo from '@react-native-community/netinfo';
 import NoInternet from '../src/components/common/no-internet';
 import { ApolloProvider } from 'react-apollo';
 import apolloClient from './apollo';
+import Toast from 'react-native-toast-message';
 const { store, persistor } = configureStore();
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Constants.Colors.White,
     flex: 1,
+  },
+  messageStyle: {
+    color: Constants.Colors.WHITE,
+    ...Constants.Fonts.regular,
+  },
+  toastContainerStyle: {
+    backgroundColor: Constants.Colors.BLACK,
+    borderRadius: 20,
+    paddingVertical: Constants.BaseStyle.DEVICE_WIDTH / 100 * 2,
+    paddingHorizontal: Constants.BaseStyle.DEVICE_WIDTH / 100 * 5
   },
 });
 
@@ -76,6 +87,14 @@ class src extends React.Component {
     }
   };
 
+  toastConfig = {
+    success: ({ text1, props, ...rest }) => (
+      <View style={styles.toastContainerStyle}>
+        <Text style={styles.messageStyle}>{text1}</Text>
+      </View>
+    ),
+  };
+
   render() {
     const { connection_Status } = this.state;
     return (
@@ -84,7 +103,10 @@ class src extends React.Component {
           <Provider store={store}>
             <PersistGate loading={<Loader />} persistor={persistor}>
               {connection_Status ? (
-                <Root />
+                <>
+                  <Root />
+                  <Toast config={this.toastConfig} ref={(ref) => Toast.setRef(ref)} position='bottom' />
+                </>
               ) : (
                 <NoInternet
                   title={'Lost Internet Connection'}

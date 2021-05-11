@@ -9,16 +9,16 @@ import {
   Platform,
 } from 'react-native';
 import _ from 'lodash';
-import {func, shape} from 'prop-types';
+import { func, shape } from 'prop-types';
 import TimerMixin from 'react-timer-mixin';
 import ReactMixin from 'react-mixin';
-import {ToastActionsCreators} from 'react-native-redux-toast';
-import {connect} from 'react-redux';
+import Toast from 'react-native-toast-message';
+import { connect } from 'react-redux';
 import Regex from '../../utilities/Regex';
 import Constants from '../../constants';
-import {resetNavigator} from '../../actions/nav-action-types';
-import {AuthStyles} from '../../styles';
-import {Button, TextInput} from '../../components';
+import { resetNavigator } from '../../actions/nav-action-types';
+import { AuthStyles } from '../../styles';
+import { Button, TextInput } from '../../components';
 
 class ChangePassword extends React.Component {
   static propTypes = {
@@ -45,9 +45,9 @@ class ChangePassword extends React.Component {
 
   onSubmit = () => {
     Keyboard.dismiss();
-    const {confirmPassword, password, oldPassword} = this.state;
+    const { confirmPassword, password, oldPassword } = this.state;
     const {
-      navigation: {dispatch},
+      navigation: { dispatch },
       resetNavigator: resetNav,
     } = this.props;
 
@@ -59,30 +59,30 @@ class ChangePassword extends React.Component {
     } = Constants.i18n.validations;
 
     if (_.isEmpty(oldPassword.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(enterOldPassword));
+      Toast.show({ text1: enterOldPassword });
 
       return;
     }
 
     if (_.isEmpty(password.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(enterNewPassword));
+      Toast.show({ text1: enterNewPassword });
 
       return;
     }
 
     if (!Regex.validatePassword(password.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(invalidPassword));
+      Toast.show({ text1: invalidPassword });
 
       return;
     }
 
     if (confirmPassword.trim() !== password.trim()) {
-      dispatch(ToastActionsCreators.displayInfo(paswordNotMatched));
+      Toast.show({ text1: paswordNotMatched });
 
       return;
     }
 
-    resetNav({route: 'Login'});
+    resetNav({ route: 'Login' });
   };
 
   handleScrollView = ref => {
@@ -108,7 +108,7 @@ class ChangePassword extends React.Component {
   };
 
   render() {
-    const {confirmPassword, password, oldPassword} = this.state;
+    const { confirmPassword, password, oldPassword } = this.state;
     const {
       password: {
         oldPasswordText,
@@ -141,7 +141,7 @@ class ChangePassword extends React.Component {
               placeholder={oldPasswordText}
               returnKeyType="next"
               secureTextEntry
-              onChangeText={value => this.setState({oldPassword: value})}
+              onChangeText={value => this.setState({ oldPassword: value })}
               onFocus={() => {
                 this.handleScrollView(
                   findNodeHandle(this.oldPasswordRef.current),
@@ -161,7 +161,7 @@ class ChangePassword extends React.Component {
               placeholder={newPassword}
               returnKeyType="next"
               secureTextEntry
-              onChangeText={value => this.setState({password: value})}
+              onChangeText={value => this.setState({ password: value })}
               onFocus={() => {
                 this.handleScrollView(
                   findNodeHandle(this.newPasswordRef.current),
@@ -182,7 +182,7 @@ class ChangePassword extends React.Component {
               placeholder={confirm}
               returnKeyType="done"
               secureTextEntry
-              onChangeText={value => this.setState({confirmPassword: value})}
+              onChangeText={value => this.setState({ confirmPassword: value })}
               onFocus={() => {
                 this.handleScrollView(
                   findNodeHandle(this.confirmPasswordRef.current),
@@ -212,5 +212,5 @@ ReactMixin(ChangePassword.prototype, TimerMixin);
 
 export default connect(
   null,
-  {resetNavigator},
+  { resetNavigator },
 )(ChangePassword);

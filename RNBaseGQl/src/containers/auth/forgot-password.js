@@ -9,14 +9,14 @@ import {
   Platform,
 } from 'react-native';
 import _ from 'lodash';
-import {func, shape} from 'prop-types';
+import { func, shape } from 'prop-types';
 import TimerMixin from 'react-timer-mixin';
 import ReactMixin from 'react-mixin';
-import {ToastActionsCreators} from 'react-native-redux-toast';
+import Toast from 'react-native-toast-message'
 import Regex from '../../utilities/Regex';
 import Constants from '../../constants';
-import {AuthStyles} from '../../styles';
-import {Button, TextInput} from '../../components';
+import { AuthStyles } from '../../styles';
+import { Button, TextInput } from '../../components';
 
 class ForgotPassword extends React.Component {
   static propTypes = {
@@ -26,7 +26,7 @@ class ForgotPassword extends React.Component {
     }).isRequired,
   };
 
-  state = {email: ''};
+  state = { email: '' };
 
   emailRef = React.createRef();
 
@@ -34,20 +34,22 @@ class ForgotPassword extends React.Component {
 
   onSubmit = () => {
     Keyboard.dismiss();
-    const {email} = this.state;
+    const { email } = this.state;
     const {
-      navigation: {dispatch},
+      navigation: { dispatch },
     } = this.props;
-    const {enterEmail, enterValidEmail} = Constants.i18n.validations;
+    const { enterEmail, enterValidEmail } = Constants.i18n.validations;
 
     if (_.isEmpty(email.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(enterEmail));
+      Toast.show({ text1: enterEmail });
 
       return;
     }
 
     if (!Regex.validateEmail(email.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(enterValidEmail));
+      Toast.show({ text1: enterValidEmail });
+
+      return;
     }
 
     // call restfull api
@@ -76,10 +78,10 @@ class ForgotPassword extends React.Component {
   };
 
   render() {
-    const {email} = this.state;
+    const { email } = this.state;
     const {
-      common: {emailAddress, forgotPass},
-      forgotPass: {desciption, sendLink},
+      common: { emailAddress, forgotPass },
+      forgotPass: { desciption, sendLink },
     } = Constants.i18n;
 
     return (
@@ -104,7 +106,7 @@ class ForgotPassword extends React.Component {
               placeholder={emailAddress}
               returnKeyType="done"
               keyboardType="email-address"
-              onChangeText={name => this.setState({email: name})}
+              onChangeText={name => this.setState({ email: name })}
               onFocus={() => {
                 this.handleScrollView(findNodeHandle(this.emailRef.current));
               }}
