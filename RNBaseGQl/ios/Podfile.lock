@@ -488,7 +488,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeLocalization (from `../node_modules/react-native-localization`)
-  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - rn-fetch-blob (from `../updated_modules/rn-fetch-blob`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
@@ -589,7 +589,7 @@ EXTERNAL SOURCES:
   ReactNativeLocalization:
     :path: "../node_modules/react-native-localization"
   rn-fetch-blob:
-    :path: "../node_modules/rn-fetch-blob"
+    :path: "../updated_modules/rn-fetch-blob"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNDeviceInfo:
@@ -671,6 +671,6 @@ SPEC CHECKSUMS:
   Yoga: a7de31c64fe738607e7a3803e3f591a4b1df7393
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 3787a544a23aafe858356edd7616a3fc07084396
+PODFILE CHECKSUM: 6f8e06bc9789aed563fca26acefe9c26b5deebf4
 
 COCOAPODS: 1.10.1
