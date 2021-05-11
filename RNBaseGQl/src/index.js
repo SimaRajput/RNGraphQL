@@ -86,11 +86,11 @@ class src extends React.Component {
               {connection_Status ? (
                 <Root />
               ) : (
-                <NoInternet
-                  title={'Lost Internet Connection'}
-                  message={'Please connect your internet connection'}
-                />
-              )}
+                  <NoInternet
+                    title={'Lost Internet Connection'}
+                    message={'Please connect your internet connection'}
+                  />
+                )}
             </PersistGate>
           </Provider>
         </View>

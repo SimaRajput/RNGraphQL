@@ -1,8 +1,9 @@
 import uniqBy from 'lodash/uniqBy';
-import { GET_MISSION_SUCCESS } from '../actions/home-actions-types';
+import { GET_MISSION_SUCCESS, GET_MOVIES_SUCCESS } from '../actions/home-actions-types';
 
 const initialState = {
-  missions: []
+  missions: [],
+  movies: []
 };
 
 export default function home(state = initialState, { payload, type }) {
@@ -11,6 +12,12 @@ export default function home(state = initialState, { payload, type }) {
       return {
         ...state,
         missions: uniqBy([...state.missions, ...payload], 'mission_name'),
+      };
+
+    case GET_MOVIES_SUCCESS:
+      return {
+        ...state,
+        movies: uniqBy([...state.movies, ...payload], 'id'),
       };
 
     default:
