@@ -1,10 +1,10 @@
 import { call, select, put, delay } from 'redux-saga/effects';
-import { ToastActionsCreators } from 'react-native-redux-toast';
 import Idx from 'idx';
 import { showLoader, hideLoader } from '../actions/app-action-types';
 import { logoutSuccess, setAuthenticationToken } from '../actions/user-actions-types';
 import axiosInstance from '../utilities/axios-instance';
 // import { nestedReset } from '../utilities/navigator-methods';
+import Toast from 'react-native-toast-message';
 
 function* HttpClient(payload, isLoader = true, authorization = true) {
   // const networkStatus = yield select(({ network: { isConnected } }) => isConnected);
@@ -66,20 +66,20 @@ function* HttpClient(payload, isLoader = true, authorization = true) {
       if (error.code === 'ECONNABORTED') {
         const message = 'Please try later our servers are not responding.';
 
-        yield put(ToastActionsCreators.displayInfo(message));
+        yield put(Toast.show(message));
       } else if (error.code === 401) {
         yield delay(250);
         yield put(logoutSuccess());
-        yield put(ToastActionsCreators.displayInfo(error.message));
+        yield put(Toast.show(error.message));
         // reset('Welcome');
         // nestedReset('Dashboard', 'Welcome');
       } else if (error.code === 402) {
         // show nothing
       } else {
-        yield put(ToastActionsCreators.displayInfo(error.message));
+        yield put(Toast.show(error.message));
       }
     } else {
-      yield put(ToastActionsCreators.displayInfo(error.message));
+      yield put(Toast.show(error.message));
     }
 
     return {

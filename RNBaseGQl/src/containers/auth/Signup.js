@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   Keyboard,
   findNodeHandle,
@@ -19,57 +19,32 @@ import Constants from '../../constants';
 import { connect } from 'react-redux';
 import { AuthStyles } from '../../styles';
 import { Button, TextInput } from '../../components';
+import i18n from '../../constants/i18n';
+import { useTranslation } from "react-i18next";
 
-class Signup extends React.Component {
-  static propTypes = {
-    navigation: shape({
-      dispatch: func.isRequired,
-      goBack: func.isRequired,
-      navigate: func.isRequired,
-    }).isRequired,
-  };
+const Signup = (props)=> {
+  const { t } = useTranslation();
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { selectedLanguage } = nextProps;
-    if (
-      selectedLanguage &&
-      selectedLanguage.lang &&
-      selectedLanguage.lang !== prevState.selectedLanguage
-    ) {
-      Constants.i18n.setLanguage(selectedLanguage.lang);
-      let isEng = false;
-      if (selectedLanguage.lang === "en") {
-        isEng = true;
-      }
+  
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
 
-      return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
-    }
-  }
+  const emailRef = React.createRef();
 
-  state = {
-    email: '',
-    password: '',
-  };
+  const passwordRef = React.createRef();
 
-  emailRef = React.createRef();
+  const scrollViewRef = React.createRef();
 
-  passwordRef = React.createRef();
-
-  scrollViewRef = React.createRef();
-
-  onSubmit = () => {
+  const onSubmit = () => {
     Keyboard.dismiss();
-
-    const { email, password } = this.state;
+  
     const {
       navigation: { dispatch, navigate },
-    } = this.props;
-    const {
-      enterEmail,
-      enterValidEmail,
-      enterPassword,
-      invalidPassword,
-    } = Constants.i18n.validations;
+    } = props;
+    const enterEmail = t('validations.enterEmail')
+    const enterValidEmail = t('validations.enterValidEmail')
+    const enterPassword = t('validations.enterPassword')
+    const invalidPassword = t('validations.invalidPassword')
 
     if (_.isEmpty(email.trim())) {
       Toast.show({ text1: enterEmail });
@@ -84,23 +59,23 @@ class Signup extends React.Component {
     }
 
     if (_.isEmpty(password.trim())) {
-      Toast.show({ text1: enterPassword });
+      Toast.show({ text1: enterPassword});
 
       return;
     }
 
     if (!Regex.validatePassword(password.trim())) {
-      Toast.show({ text1: invalidPassword });
+      Toast.show({ text1:invalidPassword});
 
       return;
     }
 
-    navigate('Success');
+    navigate('Dashboard');
   };
 
-  handleScrollView = ref => {
-    const context = this;
-    const scrollResponder = context.scrollViewRef.current.getScrollResponder();
+  const handleScrollView = ref => {
+    // const context = this;
+    const scrollResponder = scrollViewRef.current.getScrollResponder();
 
     context.setTimeout(() => {
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
@@ -111,30 +86,21 @@ class Signup extends React.Component {
     }, 300);
   };
 
-  resetScrollView = ref => {
-    const context = this;
-    const scrollResponder = context.scrollViewRef.current.getScrollResponder();
+  const resetScrollView = ref => {
+    const scrollResponder = scrollViewRef.current.getScrollResponder();
 
     context.setTimeout(() => {
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(ref, 0, true);
     }, 300);
   };
-
-  render() {
-    const { email, password } = this.state;
-    const {
-      navigation: { navigate },
-    } = this.props;
-    const {
-      common: { emailAddress, password: passwordText, or },
-      signup: { alreadyUser, createAccount },
-    } = Constants.i18n;
+  const  { navigation: { navigate } } = props;
+    
 
     return (
       <View style={AuthStyles.container}>
         <View style={AuthStyles.content}>
           <ScrollView
-            ref={this.scrollViewRef}
+            ref={scrollViewRef}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             keyboardDismissMode={Platform.OS === 'ios' ? 'on-drag' : 'none'}
@@ -146,47 +112,47 @@ class Signup extends React.Component {
             />
             <TextInput
               container={AuthStyles.signupTextInputContainer}
-              ref={this.emailRef}
+              ref={emailRef}
               value={email}
-              placeholder={emailAddress}
+              placeholder={t('common.emailAddress')}
               returnKeyType="next"
-              onChangeText={value => this.setState({ email: value })}
-              onFocus={() => {
-                this.handleScrollView(findNodeHandle(this.emailRef.current));
-              }}
-              onBlur={() => {
-                this.resetScrollView(findNodeHandle(this.emailRef.current));
-              }}
-              onSubmitEditing={() => this.passwordRef.current.focus()}
+              onChangeText={setEmail}
+              // onFocus={() => {
+              //   this.handleScrollView(findNodeHandle(emailRef.current));
+              // }}
+              // onBlur={() => {
+              //   this.resetScrollView(findNodeHandle(this.emailRef.current));
+              // }}
+              // onSubmitEditing={passwordRef.current.focus()}
             />
             <TextInput
-              ref={this.passwordRef}
+              ref={passwordRef}
               value={password}
-              placeholder={passwordText}
+              placeholder={t('common.password')}
               returnKeyType="done"
               secureTextEntry
               maxLength={16}
-              onChangeText={pass => this.setState({ password: pass })}
-              onFocus={() => {
-                this.handleScrollView(findNodeHandle(this.passwordRef.current));
-              }}
-              onBlur={() => {
-                this.resetScrollView(findNodeHandle(this.passwordRef.current));
-              }}
-              onSubmitEditing={this.onSubmit}
+              onChangeText={setPassword}
+              // onFocus={() => {
+              //   handleScrollView(findNodeHandle(this.passwordRef.current));
+              // }}
+              // onBlur={() => {
+              //   this.resetScrollView(findNodeHandle(this.passwordRef.current));
+              // }}
+              onSubmitEditing={onSubmit}
             />
             <Button
-              onPress={this.onSubmit}
+              onPress={onSubmit}
               style={AuthStyles.buttonStyle}
-              title={createAccount}
+              title={t('signup.createAccount')}
             />
-            <Text style={AuthStyles.sepratorStyle}>{or}</Text>
+            <Text style={AuthStyles.sepratorStyle}>{t('common.or')}</Text>
             <TouchableOpacity
               hitSlop={Constants.BaseStyle.HIT_SLOP}
               onPress={() => navigate('Login')}
               activeOpacity={0.9}>
               <Text style={AuthStyles.textDecorationLineStyle}>
-                {alreadyUser}
+              {t('signup.alreadyUser')}
               </Text>
             </TouchableOpacity>
           </ScrollView>
@@ -194,7 +160,15 @@ class Signup extends React.Component {
       </View>
     );
   }
-}
+  Signup.propTypes = {  
+    navigation: shape({
+    dispatch: func.isRequired,
+    goBack: func.isRequired,
+    navigate: func.isRequired,
+  }).isRequired,
+};
+
+
 ReactMixin(Signup.prototype, TimerMixin);
 
 const mapStateToProps = ({ user: { deviceToken },

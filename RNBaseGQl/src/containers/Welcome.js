@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
 import { View, Image, TouchableOpacity, Text } from 'react-native';
+import React, { useState, useEffect } from "react";
 import { func, shape } from 'prop-types';
 import Constants from '../constants';
 import { WelcomeStyles } from '../styles';
@@ -9,104 +9,63 @@ import TimerMixin from "react-timer-mixin";
 import ReactMixin from "react-mixin";
 import * as updateLanguageActions from "../actions/update-language-types";
 import { measureConnectionSpeed } from 'react-native-network-bandwith-speed';
+import i18n from '../constants/i18n';
+import { useTranslation } from "react-i18next";
 
 
-class Welcome extends PureComponent {
-  static propTypes = {
-    navigation: shape({
-      dispatch: func.isRequired,
-      navigate: func.isRequired,
-    }).isRequired,
+const Welcome = (props) => {
+  let isEn = false;
+  const { selectedLanguage } = props;
+  let selectedLangValue = selectedLanguage?.lang;
+  if (
+    selectedLanguage &&
+    selectedLanguage.lang &&
+    selectedLanguage.lang === "en"
+  ) {
+    selectedLangValue = selectedLanguage.lang;
+    isEn = true;
   };
+  const [ENSelected, setIsENSelected] = useState(isEn ? true : false);
+  const [ARSelected, setIsARSelected] = useState(isEn ? false : true);
+  const [isEng, setIsEng] = useState(isEn);
+  const [selectedLangVal, setSelectedLangValue] = useState(selectedLangValue);
 
-  componentDidMount() {
-    this.getNetworkBandwidth()
-  }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { selectedLanguage } = nextProps;
-    if (
-      selectedLanguage &&
-      selectedLanguage.lang &&
-      selectedLanguage.lang !== prevState.selectedLanguage
-    ) {
-      Constants.i18n.setLanguage(selectedLanguage.lang);
-      let isEng = false;
-      if (selectedLanguage.lang === "en") {
-        isEng = true;
-      }
-
-      return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
-    }
-  }
-
-  getNetworkBandwidth = async () => {
-    try {
-      const networkSpeed = await measureConnectionSpeed();
-      console.log('networkSpeed', networkSpeed); // Network bandwidth speed 
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  constructor(props) {
-    super(props);
-    let isEng = false;
-    const { selectedLanguage } = props;
-    let selectedLangVal = selectedLanguage?.lang;
-
-    if (
-      selectedLanguage &&
-      selectedLanguage.lang &&
-      selectedLanguage.lang === "en"
-    ) {
-      selectedLangVal = selectedLanguage.lang;
-      isEng = true;
-    }
-    this.state = {
-      ENSelected: isEng ? true : false,
-      ARSelected: isEng ? false : true,
-      isEng: isEng,
-      selectedLangVal: selectedLangVal
-    };
+  useEffect(() => {
+    const { updateAppLanguage } = props;
     const data = {
       lang: selectedLangVal,
     };
-    this.props?.updateAppLanguage(data);
+    updateAppLanguage(data);
+    measureConnectionSpeed();
+
+  }, []);
+
+  useEffect(() => {
+    i18n.changeLanguage(selectedLanguage.lang);
+
+  }, [selectedLanguage.lang])
+
+
+  const setENLanguage = () => {
+    const data = { lang: "en" };
+    setIsENSelected(true),
+      setIsARSelected(false),
+      updatelangData(data);
   }
 
 
-  setENLanguage() {
-    this.setState(
-      {
-        ENSelected: true,
-        ARSelected: false,
-      },
-      () => {
-        const data = { lang: "en" };
 
-        this.updatelangData(data);
-      }
-    );
+  const setARLanguage = () => {
+    const data = { lang: "ar" };
+    setIsENSelected(false),
+      setIsARSelected(true),
+      updatelangData(data);
   }
 
-  setARLanguage() {
-    this.setState(
-      {
-        ENSelected: false,
-        ARSelected: true,
-      },
-      () => {
-        const data = { lang: "ar" };
-        this.updatelangData(data);
-      }
-    );
-  }
-
-  async updatelangData(data) {
-    const { selectedLanguage } = this.props;
-    await this.props?.updateAppLanguage(data);
-    let setLang = "mx";
+  const updatelangData = async (data) => {
+    await props?.updateAppLanguage(data);
+    let setLang = "ar";
     if (
       selectedLanguage &&
       selectedLanguage.lang &&
@@ -114,19 +73,18 @@ class Welcome extends PureComponent {
     ) {
       setLang = "en";
     }
-    Constants.i18n.setLanguage(setLang);
+    i18n.changeLanguage(setLang);
   }
 
 
-  renderlangBtn() {
-    const { ARSelected, ENSelected } = this.state;
+  const renderlangBtn = () => {
     return (
       <View style={WelcomeStyles.languageSwitchMainView}>
         <TouchableOpacity
           style={
             ARSelected ? WelcomeStyles.selectedBtn : WelcomeStyles.langBtnMainView
           }
-          onPress={() => this.setARLanguage()}
+          onPress={() => setARLanguage()}
         >
           <Text
             style={
@@ -142,7 +100,7 @@ class Welcome extends PureComponent {
           style={
             !ARSelected ? WelcomeStyles.selectedBtn : WelcomeStyles.langBtnMainView
           }
-          onPress={() => this.setENLanguage()}
+          onPress={() => setENLanguage()}
         >
           <Text
             style={
@@ -157,43 +115,37 @@ class Welcome extends PureComponent {
       </View>
     );
   }
-  render() {
-    const {
-      navigation: { navigate },
-      selectedLanguage,
-    } = this.props;
 
-    const {
-      common: {
-        LoginBtnTitle,
-        signupBtnTitle,
-      },
-    } = Constants.i18n;
+  const {
+    navigation: { navigate },
 
-    return (
-      <View style={WelcomeStyles.container}>
-        {this.renderlangBtn()}
-        <View style={WelcomeStyles.content}>
-          <Image
-            resizeMode="contain"
-            source={Constants.Images.logo}
-            style={WelcomeStyles.logoStyle}
-          />
-          <Button
-            onPress={() => navigate('Signup')}
-            style={WelcomeStyles.buttonStyle}
-            title={signupBtnTitle}
-          />
-          <Button
-            onPress={() => navigate('Login')}
-            style={WelcomeStyles.buttonStyle}
-            title={LoginBtnTitle}
-          />
-        </View>
+  } = props;
+  const { t } = useTranslation();
+
+  return (
+    <View style={WelcomeStyles.container}>
+      {renderlangBtn()}
+      <View style={WelcomeStyles.content}>
+        <Image
+          resizeMode="contain"
+          source={Constants.Images.logo}
+          style={WelcomeStyles.logoStyle}
+        />
+        <Button
+          onPress={() => navigate('Signup')}
+          style={WelcomeStyles.buttonStyle}
+          title={t('common.signupBtnTitle')}
+        />
+        <Button
+          onPress={() => navigate('Login')}
+          style={WelcomeStyles.buttonStyle}
+          title={t('common.LoginBtnTitle')}
+        />
       </View>
-    );
-  }
+    </View>
+  );
 }
+
 
 ReactMixin(Welcome.prototype, TimerMixin);
 

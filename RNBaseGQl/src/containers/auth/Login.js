@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   Keyboard,
   findNodeHandle,
@@ -13,71 +13,49 @@ import _ from 'lodash';
 import { func, shape } from 'prop-types';
 import TimerMixin from 'react-timer-mixin';
 import ReactMixin from 'react-mixin';
-import { connect } from 'react-redux';
-import { ToastActionsCreators } from 'react-native-redux-toast';
 import Toast from 'react-native-toast-message';
 import Regex from '../../utilities/Regex';
 import Constants from '../../constants';
+import { connect } from 'react-redux';
 import { AuthStyles } from '../../styles';
 import { Button, TextInput } from '../../components';
+import i18n from '../../constants/i18n';
+import { useTranslation } from "react-i18next";
 import * as userActions from '../../actions/user-actions-types';
-class Login extends React.Component {
-  static propTypes = {
-    navigation: shape({
-      dispatch: func.isRequired,
-      navigate: func.isRequired,
-    }).isRequired,
-  };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { selectedLanguage } = nextProps;
-    if (
-      selectedLanguage &&
-      selectedLanguage.lang &&
-      selectedLanguage.lang !== prevState.selectedLanguage
-    ) {
-      Constants.i18n.setLanguage(selectedLanguage.lang);
-      let isEng = false;
-      if (selectedLanguage.lang === "en") {
-        isEng = true;
-      }
+const Login = (props)=> {
+  const { t } = useTranslation();
 
-      return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
-    }
-  }
+  
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
 
-  state = {
-    password: '',
-    username: '',
-  };
+  const emailRef = React.createRef();
 
-  usernameRef = React.createRef();
+  const passwordRef = React.createRef();
 
-  passwordRef = React.createRef();
+  const scrollViewRef = React.createRef();
 
-  scrollViewRef = React.createRef();
 
-  onSubmit = () => {
+
+    const onSubmit = () => {
     Keyboard.dismiss();
 
-    const { username, password } = this.state;
     const {
       navigation: { dispatch, navigate }, login, deviceToken,
-    } = this.props;
-    const {
-      enterEmail,
-      enterValidEmail,
-      enterPassword,
-      invalidPassword,
-    } = Constants.i18n.validations;
+    } = props;
+    const enterEmail = t('validations.enterEmail')
+    const enterValidEmail = t('validations.enterValidEmail')
+    const enterPassword = t('validations.enterPassword')
+    const invalidPassword = t('validations.invalidPassword')
 
-    if (_.isEmpty(username.trim())) {
+    if (_.isEmpty(email.trim())) {
       Toast.show({ text1: enterEmail });
 
       return;
     }
 
-    if (!Regex.validateEmail(username.trim())) {
+    if (!Regex.validateEmail(email.trim())) {
       Toast.show({ text1: enterValidEmail });
 
       return;
@@ -96,7 +74,7 @@ class Login extends React.Component {
     }
     const requestObject = {
       ID: 1,
-      UserName: username,
+      UserName: email,
       Password: password,
     };
 
@@ -104,15 +82,13 @@ class Login extends React.Component {
       callback: () => console.log('welcome'),
       data: requestObject,
     });
-    console.log('requestObject', requestObject)
     navigate('Dashboard');
   };
 
 
-
-  handleScrollView = ref => {
-    const context = this;
-    const scrollResponder = context.scrollViewRef.current.getScrollResponder();
+  const handleScrollView = ref => {
+    // const context = this;
+    const scrollResponder = scrollViewRef.current.getScrollResponder();
 
     context.setTimeout(() => {
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
@@ -123,30 +99,21 @@ class Login extends React.Component {
     }, 300);
   };
 
-  resetScrollView = ref => {
-    const context = this;
-    const scrollResponder = context.scrollViewRef.current.getScrollResponder();
+  const resetScrollView = ref => {
+    const scrollResponder = scrollViewRef.current.getScrollResponder();
 
     context.setTimeout(() => {
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(ref, 0, true);
     }, 300);
   };
-
-  render() {
-    const { username, password } = this.state;
-    const {
-      navigation: { navigate },
-    } = this.props;
-    const {
-      common: { emailAddress, password: passwordText, forgotPass, or },
-      login: { login, createAccount },
-    } = Constants.i18n;
+  const  { navigation: { navigate } } = props;
+    
 
     return (
       <View style={AuthStyles.container}>
         <View style={AuthStyles.content}>
           <ScrollView
-            ref={this.scrollViewRef}
+            ref={scrollViewRef}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             keyboardDismissMode={Platform.OS === 'ios' ? 'on-drag' : 'none'}
@@ -157,56 +124,56 @@ class Login extends React.Component {
               resizeMode='contain'
             />
             <TextInput
-              ref={this.usernameRef}
-              value={username}
-              placeholder={emailAddress}
+              container={AuthStyles.signupTextInputContainer}
+              ref={emailRef}
+              value={email}
+              placeholder={t('common.emailAddress')}
               returnKeyType="next"
-              keyboardType="email-address"
-              onChangeText={name => this.setState({ username: name })}
-              onFocus={() => {
-                this.handleScrollView(findNodeHandle(this.usernameRef.current));
-              }}
-              onBlur={() => {
-                this.resetScrollView(findNodeHandle(this.usernameRef.current));
-              }}
-              onSubmitEditing={() => this.passwordRef.current.focus()}
+              onChangeText={setEmail}
+              // onFocus={() => {
+              //   this.handleScrollView(findNodeHandle(emailRef.current));
+              // }}
+              // onBlur={() => {
+              //   this.resetScrollView(findNodeHandle(this.emailRef.current));
+              // }}
+              // onSubmitEditing={passwordRef.current.focus()}
             />
             <TextInput
-              ref={this.passwordRef}
+              ref={passwordRef}
               value={password}
-              placeholder={passwordText}
+              placeholder={t('common.password')}
               returnKeyType="done"
               secureTextEntry
               maxLength={16}
-              onChangeText={pass => this.setState({ password: pass })}
-              onFocus={() => {
-                this.handleScrollView(findNodeHandle(this.passwordRef.current));
-              }}
-              onBlur={() => {
-                this.resetScrollView(findNodeHandle(this.passwordRef.current));
-              }}
-              onSubmitEditing={this.onSubmit}
+              onChangeText={setPassword}
+              // onFocus={() => {
+              //   handleScrollView(findNodeHandle(this.passwordRef.current));
+              // }}
+              // onBlur={() => {
+              //   this.resetScrollView(findNodeHandle(this.passwordRef.current));
+              // }}
+              onSubmitEditing={onSubmit}
+            />
+            <Button
+              onPress={onSubmit}
+              style={AuthStyles.buttonStyle}
+              title={t('login.login')}
             />
             <TouchableOpacity
               hitSlop={Constants.BaseStyle.HIT_SLOP}
-              onPress={() => navigate('ForgotPassword')}
+              // onPress={() => navigate('ForgotPassword')}
               activeOpacity={0.9}>
               <Text style={AuthStyles.textDecorationLineStyle}>
-                {`${forgotPass.toUpperCase()}?`}
+              {t('common.forgotPass').toUpperCase()}
               </Text>
             </TouchableOpacity>
-            <Button
-              onPress={this.onSubmit}
-              style={AuthStyles.buttonStyle}
-              title={login.toUpperCase()}
-            />
-            <Text style={AuthStyles.sepratorStyle}>{or}</Text>
+            <Text style={AuthStyles.sepratorStyle}>{t('common.or')}</Text>
             <TouchableOpacity
               hitSlop={Constants.BaseStyle.HIT_SLOP}
               onPress={() => navigate('Signup')}
               activeOpacity={0.9}>
               <Text style={AuthStyles.textDecorationLineStyle}>
-                {createAccount}
+                {t('login.createAccount')}
               </Text>
             </TouchableOpacity>
           </ScrollView>
@@ -214,12 +181,23 @@ class Login extends React.Component {
       </View>
     );
   }
-}
+
 ReactMixin(Login.prototype, TimerMixin);
 
-export default connect(
-  ({ user: { deviceToken }, language: { selectedLanguage } }) => ({ deviceToken, selectedLanguage }),
-  {
-    login: userActions.login,
-  }
-)(Login);
+Login.propTypes = {  
+  navigation: shape({
+  dispatch: func.isRequired,
+  goBack: func.isRequired,
+  navigate: func.isRequired,
+}).isRequired,
+};
+
+
+const mapStateToProps = ({ user: { deviceToken },
+  language: { selectedLanguage },
+}) => ({ deviceToken, selectedLanguage });
+
+
+export default connect(mapStateToProps,{
+  login: userActions.login,
+})(Login);
