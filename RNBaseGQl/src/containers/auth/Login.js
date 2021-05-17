@@ -7,18 +7,19 @@ import {
   ScrollView,
   Text,
   Platform,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native';
 import _ from 'lodash';
-import {func, shape} from 'prop-types';
+import { func, shape } from 'prop-types';
 import TimerMixin from 'react-timer-mixin';
 import ReactMixin from 'react-mixin';
 import { connect } from 'react-redux';
-import {ToastActionsCreators} from 'react-native-redux-toast';
+import { ToastActionsCreators } from 'react-native-redux-toast';
+import Toast from 'react-native-toast-message';
 import Regex from '../../utilities/Regex';
 import Constants from '../../constants';
-import {AuthStyles} from '../../styles';
-import {Button, TextInput} from '../../components';
+import { AuthStyles } from '../../styles';
+import { Button, TextInput } from '../../components';
 import * as userActions from '../../actions/user-actions-types';
 class Login extends React.Component {
   static propTypes = {
@@ -59,9 +60,9 @@ class Login extends React.Component {
   onSubmit = () => {
     Keyboard.dismiss();
 
-    const {username, password} = this.state;
+    const { username, password } = this.state;
     const {
-      navigation: {dispatch, navigate},login,deviceToken,
+      navigation: { dispatch, navigate }, login, deviceToken,
     } = this.props;
     const {
       enterEmail,
@@ -71,43 +72,43 @@ class Login extends React.Component {
     } = Constants.i18n.validations;
 
     if (_.isEmpty(username.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(enterEmail));
+      Toast.show({ text1: enterEmail });
 
       return;
     }
 
     if (!Regex.validateEmail(username.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(enterValidEmail));
+      Toast.show({ text1: enterValidEmail });
 
       return;
     }
 
     if (_.isEmpty(password.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(enterPassword));
+      Toast.show({ text1: enterPassword });
 
       return;
     }
 
     if (!Regex.validatePassword(password.trim())) {
-      dispatch(ToastActionsCreators.displayInfo(invalidPassword));
+      Toast.show({ text1: invalidPassword });
 
       return;
     }
     const requestObject = {
-      ID:1,
+      ID: 1,
       UserName: username,
-      Password:password,
+      Password: password,
     };
 
     login({
       callback: () => console.log('welcome'),
       data: requestObject,
     });
-    console.log('requestObject',requestObject)
+    console.log('requestObject', requestObject)
     navigate('Dashboard');
   };
-    
-  
+
+
 
   handleScrollView = ref => {
     const context = this;
@@ -132,13 +133,13 @@ class Login extends React.Component {
   };
 
   render() {
-    const {username, password} = this.state;
+    const { username, password } = this.state;
     const {
-      navigation: {navigate},
+      navigation: { navigate },
     } = this.props;
     const {
-      common: {emailAddress, password: passwordText, forgotPass, or},
-      login: {login, createAccount},
+      common: { emailAddress, password: passwordText, forgotPass, or },
+      login: { login, createAccount },
     } = Constants.i18n;
 
     return (
@@ -161,7 +162,7 @@ class Login extends React.Component {
               placeholder={emailAddress}
               returnKeyType="next"
               keyboardType="email-address"
-              onChangeText={name => this.setState({username: name})}
+              onChangeText={name => this.setState({ username: name })}
               onFocus={() => {
                 this.handleScrollView(findNodeHandle(this.usernameRef.current));
               }}
@@ -177,7 +178,7 @@ class Login extends React.Component {
               returnKeyType="done"
               secureTextEntry
               maxLength={16}
-              onChangeText={pass => this.setState({password: pass})}
+              onChangeText={pass => this.setState({ password: pass })}
               onFocus={() => {
                 this.handleScrollView(findNodeHandle(this.passwordRef.current));
               }}
@@ -217,7 +218,7 @@ class Login extends React.Component {
 ReactMixin(Login.prototype, TimerMixin);
 
 export default connect(
-  ({ user: { deviceToken },language: { selectedLanguage } }) => ({ deviceToken,selectedLanguage }),
+  ({ user: { deviceToken }, language: { selectedLanguage } }) => ({ deviceToken, selectedLanguage }),
   {
     login: userActions.login,
   }

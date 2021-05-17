@@ -613,7 +613,7 @@ SPEC CHECKSUMS:
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   Fabric: ea977e3cd9c20425516d3dafd3bf8c941c51223f
   FBLazyVector: 7b423f9e248eae65987838148c36eec1dbfe0b53
-  FBReactNativeSpec: 530cd9a21196f043ca2dba6c16eef85f1f62d323
+  FBReactNativeSpec: ed6a116c61917b378731f86cd392a40dd1781f2b
   Firebase: c121feb35e4126c0b355e3313fa9b487d47319fd
   FirebaseAnalytics: cd3bd84d722a24a8923918af8af8e5236f615d77
   FirebaseCore: 907447d8917a4d3eb0cce2829c5a0ad21d90b432
@@ -647,7 +647,7 @@ SPEC CHECKSUMS:
   React-jsi: 5de8204706bd872b78ea646aee5d2561ca1214b6
   React-jsiexecutor: 124e8f99992490d0d13e0649d950d3e1aae06fe9
   React-jsinspector: 500a59626037be5b3b3d89c5151bc3baa9abf1a9
-  react-native-netinfo: cb3988d9a2115ec4cf7a8cecbc1cfee0d188c7c9
+  react-native-netinfo: 45a7a76415a38c8c227c961e835cd1fff31f7c4d
   React-perflogger: aad6d4b4a267936b3667260d1f649b6f6069a675
   React-RCTActionSheet: fc376be462c9c8d6ad82c0905442fd77f82a9d2a
   React-RCTAnimation: ba0a1c3a2738be224a08092fa7f1b444ab77d309
@@ -660,10 +660,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4b99a7f5c6c0abbc5256410cc5425fb8531986e1
   React-runtimeexecutor: ff951a0c241bfaefc4940a3f1f1a229e7cb32fa6
   ReactCommon: bedc99ed4dae329c4fcf128d0c31b9115e5365ca
-  ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
+  ReactNativeLocalization: 6535b6a1425eb3bd8cd32285810931d9709ffa5d
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
-  RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
+  RNCAsyncStorage: cb9a623793918c6699586281f0b51cbc38f046f9
+  RNDeviceInfo: e841619c3dac5495a095c5455473579ff04908d4
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
