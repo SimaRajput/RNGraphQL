@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   Keyboard,
   findNodeHandle,
@@ -19,44 +19,35 @@ import Constants from '../../constants';
 import { resetNavigator } from '../../actions/nav-action-types';
 import { AuthStyles } from '../../styles';
 import { Button, TextInput } from '../../components';
+import { useTranslation } from "react-i18next";
 
-class ChangePassword extends React.Component {
-  static propTypes = {
-    navigation: shape({
-      dispatch: func.isRequired,
-      goBack: func.isRequired,
-    }).isRequired,
-    resetNavigator: func.isRequired,
-  };
+const ChangePassword = (props) => {
+  const { t } = useTranslation();
+  
+  const [ confirmPassword, setConfirmPassword ] = useState('');
+  const [ oldPassword, setOldPassword ] = useState('');
+  const [ password, setPassword ] = useState('');
 
-  state = {
-    confirmPassword: '',
-    oldPassword: '',
-    password: '',
-  };
+  const oldPasswordRef = React.createRef();
 
-  oldPasswordRef = React.createRef();
+  const newPasswordRef = React.createRef();
 
-  newPasswordRef = React.createRef();
+  const confirmPasswordRef = React.createRef();
 
-  confirmPasswordRef = React.createRef();
+  const scrollViewRef = React.createRef();
 
-  scrollViewRef = React.createRef();
-
-  onSubmit = () => {
+  const onSubmit = () => {
     Keyboard.dismiss();
-    const { confirmPassword, password, oldPassword } = this.state;
     const {
       navigation: { dispatch },
       resetNavigator: resetNav,
-    } = this.props;
+    } = props;
 
-    const {
-      enterOldPassword,
-      enterNewPassword,
-      invalidPassword,
-      paswordNotMatched,
-    } = Constants.i18n.validations;
+    const enterOldPassword = t('validations.enterOldPassword')
+    const enterNewPassword = t('validations.enterNewPassword')
+    const invalidPassword = t('validations.invalidPassword')
+    const paswordNotMatched = t('validations.paswordNotMatched')
+
 
     if (_.isEmpty(oldPassword.trim())) {
       Toast.show({ text1: enterOldPassword });
@@ -85,9 +76,8 @@ class ChangePassword extends React.Component {
     resetNav({ route: 'Login' });
   };
 
-  handleScrollView = ref => {
-    const context = this;
-    const scrollResponder = context.scrollViewRef.current.getScrollResponder();
+  const handleScrollView = ref => {
+    const scrollResponder = scrollViewRef.current.getScrollResponder();
 
     context.setTimeout(() => {
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
@@ -98,33 +88,19 @@ class ChangePassword extends React.Component {
     }, 300);
   };
 
-  resetScrollView = ref => {
-    const context = this;
-    const scrollResponder = context.scrollViewRef.current.getScrollResponder();
+  const resetScrollView = ref => {
+    const scrollResponder = scrollViewRef.current.getScrollResponder();
 
     context.setTimeout(() => {
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(ref, 0, true);
     }, 300);
   };
 
-  render() {
-    const { confirmPassword, password, oldPassword } = this.state;
-    const {
-      password: {
-        oldPasswordText,
-        savePassword,
-        setNewPassword,
-        setNewPasswordHere,
-        confirm,
-        newPassword,
-      },
-    } = Constants.i18n;
-
-    return (
+   return (
       <View style={AuthStyles.container}>
         <View style={AuthStyles.content}>
           <ScrollView
-            ref={this.scrollViewRef}
+            ref={scrollViewRef}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             keyboardDismissMode={Platform.OS === 'ios' ? 'on-drag' : 'none'}
@@ -133,82 +109,92 @@ class ChangePassword extends React.Component {
               source={Constants.Images.logo}
               style={AuthStyles.logoStyle}
             />
-            <Text style={AuthStyles.textStyle}>{setNewPassword}</Text>
-            <Text style={AuthStyles.description}>{setNewPasswordHere}</Text>
+            <Text style={AuthStyles.textStyle}>{t('password.setNewPassword')}</Text>
+            <Text style={AuthStyles.description}>{t('password.setNewPasswordHere')}</Text>
             <TextInput
-              ref={this.oldPasswordRef}
+              ref={oldPasswordRef}
               value={oldPassword}
-              placeholder={oldPasswordText}
+              placeholder={t('password.oldPasswordText')}
               returnKeyType="next"
               secureTextEntry
-              onChangeText={value => this.setState({ oldPassword: value })}
-              onFocus={() => {
-                this.handleScrollView(
-                  findNodeHandle(this.oldPasswordRef.current),
-                );
-              }}
-              onBlur={() => {
-                this.resetScrollView(
-                  findNodeHandle(this.oldPasswordRef.current),
-                );
-              }}
-              onSubmitEditing={() => this.newPasswordRef.current.focus()}
+              onChangeText={setOldPassword}
+              // onFocus={() => {
+              //   this.handleScrollView(
+              //     findNodeHandle(this.oldPasswordRef.current),
+              //   );
+              // }}
+              // onBlur={() => {
+              //   this.resetScrollView(
+              //     findNodeHandle(this.oldPasswordRef.current),
+              //   );
+              // }}
+              // onSubmitEditing={() => this.newPasswordRef.current.focus()}
               maxLength={16}
             />
             <TextInput
-              ref={this.newPasswordRef}
+              ref={newPasswordRef}
               value={password}
               placeholder={newPassword}
+              placeholder={t('password.newPassword')}
               returnKeyType="next"
               secureTextEntry
-              onChangeText={value => this.setState({ password: value })}
-              onFocus={() => {
-                this.handleScrollView(
-                  findNodeHandle(this.newPasswordRef.current),
-                );
-              }}
-              onBlur={() => {
-                this.resetScrollView(
-                  findNodeHandle(this.newPasswordRef.current),
-                );
-              }}
-              onSubmitEditing={() => this.confirmPasswordRef.current.focus()}
+              onChangeText={setPassword}
+              // onFocus={() => {
+              //   this.handleScrollView(
+              //     findNodeHandle(this.newPasswordRef.current),
+              //   );
+              // }}
+              // onBlur={() => {
+              //   this.resetScrollView(
+              //     findNodeHandle(this.newPasswordRef.current),
+              //   );
+              // }}
+              // onSubmitEditing={confirmPasswordRef.current.focus()}
               maxLength={16}
             />
 
             <TextInput
-              ref={this.confirmPasswordRef}
+              ref={confirmPasswordRef}
               value={confirmPassword}
               placeholder={confirm}
+              placeholder={t('password.confirm')}
               returnKeyType="done"
               secureTextEntry
-              onChangeText={value => this.setState({ confirmPassword: value })}
-              onFocus={() => {
-                this.handleScrollView(
-                  findNodeHandle(this.confirmPasswordRef.current),
-                );
-              }}
-              onBlur={() => {
-                this.resetScrollView(
-                  findNodeHandle(this.confirmPasswordRef.current),
-                );
-              }}
-              onSubmitEditing={this.onSubmit}
+              onChangeText={setConfirmPassword}
+              // onFocus={() => {
+              //   this.handleScrollView(
+              //     findNodeHandle(this.confirmPasswordRef.current),
+              //   );
+              // }}
+              // onBlur={() => {
+              //   this.resetScrollView(
+              //     findNodeHandle(this.confirmPasswordRef.current),
+              //   );
+              // }}
+              onSubmitEditing={onSubmit}
               maxLength={16}
             />
 
             <Button
-              onPress={this.onSubmit}
+              onPress={onSubmit}
               style={AuthStyles.buttonStyle}
-              title={savePassword}
+              title={t('password.savePassword')}
             />
           </ScrollView>
         </View>
       </View>
     );
   }
-}
+
 ReactMixin(ChangePassword.prototype, TimerMixin);
+
+ChangePassword.propTypes = {
+    navigation: shape({
+      dispatch: func.isRequired,
+      goBack: func.isRequired,
+    }).isRequired,
+    resetNavigator: func.isRequired,
+  };
 
 export default connect(
   null,

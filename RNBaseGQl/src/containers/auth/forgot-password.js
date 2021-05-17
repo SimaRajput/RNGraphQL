@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   Keyboard,
   findNodeHandle,
@@ -17,28 +17,26 @@ import Regex from '../../utilities/Regex';
 import Constants from '../../constants';
 import { AuthStyles } from '../../styles';
 import { Button, TextInput } from '../../components';
+import { useTranslation } from "react-i18next";
 
-class ForgotPassword extends React.Component {
-  static propTypes = {
-    navigation: shape({
-      dispatch: func.isRequired,
-      goBack: func.isRequired,
-    }).isRequired,
-  };
+const ForgotPassword = (props) => {
+  const { t } = useTranslation();
+ 
+  const [email, setEmail ] = useState('')
 
-  state = { email: '' };
+  const emailRef = React.createRef();
 
-  emailRef = React.createRef();
+  const scrollViewRef = React.createRef();
 
-  scrollViewRef = React.createRef();
-
-  onSubmit = () => {
+  const onSubmit = () => {
     Keyboard.dismiss();
-    const { email } = this.state;
     const {
-      navigation: { dispatch },
-    } = this.props;
-    const { enterEmail, enterValidEmail } = Constants.i18n.validations;
+      navigation: { dispatch,navigate },
+    } = props;
+    
+    const enterEmail = t('validations.enterEmail')
+    const enterValidEmail = t('validations.enterValidEmail')
+   
 
     if (_.isEmpty(email.trim())) {
       Toast.show({ text1: enterEmail });
@@ -53,42 +51,14 @@ class ForgotPassword extends React.Component {
     }
 
     // call restfull api
+    navigate('Login')
   };
-
-  handleScrollView = ref => {
-    const context = this;
-    const scrollResponder = context.scrollViewRef.current.getScrollResponder();
-
-    context.setTimeout(() => {
-      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-        ref,
-        (Constants.BaseStyle.DEVICE_HEIGHT / 100) * 20,
-        true,
-      );
-    }, 300);
-  };
-
-  resetScrollView = ref => {
-    const context = this;
-    const scrollResponder = context.scrollViewRef.current.getScrollResponder();
-
-    context.setTimeout(() => {
-      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(ref, 0, true);
-    }, 300);
-  };
-
-  render() {
-    const { email } = this.state;
-    const {
-      common: { emailAddress, forgotPass },
-      forgotPass: { desciption, sendLink },
-    } = Constants.i18n;
 
     return (
       <View style={AuthStyles.container}>
         <View style={AuthStyles.content}>
           <ScrollView
-            ref={this.scrollViewRef}
+            // ref={this.scrollViewRef}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             keyboardDismissMode={Platform.OS === 'ios' ? 'on-drag' : 'none'}
@@ -98,34 +68,35 @@ class ForgotPassword extends React.Component {
               style={AuthStyles.logoStyle}
               resizeMode='contain'
             />
-            <Text style={AuthStyles.textStyle}>{forgotPass}</Text>
-            <Text style={AuthStyles.description}>{desciption}</Text>
+            <Text style={AuthStyles.textStyle}>{t('common.forgotPass')}</Text>
+            <Text style={AuthStyles.description}>{t('forgotPass.desciption')}</Text>
             <TextInput
-              ref={this.emailRef}
+              ref={emailRef}
               value={email}
-              placeholder={emailAddress}
+              placeholder={t('common.emailAddress')}
               returnKeyType="done"
               keyboardType="email-address"
-              onChangeText={name => this.setState({ email: name })}
-              onFocus={() => {
-                this.handleScrollView(findNodeHandle(this.emailRef.current));
-              }}
-              onBlur={() => {
-                this.resetScrollView(findNodeHandle(this.emailRef.current));
-              }}
-              onSubmitEditing={this.onSubmit}
+              onChangeText={setEmail}
             />
             <Button
-              onPress={this.onSubmit}
+              onPress={onSubmit}
               style={AuthStyles.buttonStyle}
-              title={sendLink}
+              title={t('forgotPass.sendLink')}
             />
           </ScrollView>
         </View>
       </View>
     );
   }
-}
+
 ReactMixin(ForgotPassword.prototype, TimerMixin);
+
+ForgotPassword.propTypes = {
+    navigation: shape({
+      dispatch: func.isRequired,
+      goBack: func.isRequired,
+    }).isRequired,
+  };
+
 
 export default ForgotPassword;

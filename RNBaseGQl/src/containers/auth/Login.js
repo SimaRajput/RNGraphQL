@@ -161,7 +161,7 @@ const Login = (props)=> {
             />
             <TouchableOpacity
               hitSlop={Constants.BaseStyle.HIT_SLOP}
-              // onPress={() => navigate('ForgotPassword')}
+              onPress={() => navigate('ForgotPassword')}
               activeOpacity={0.9}>
               <Text style={AuthStyles.textDecorationLineStyle}>
               {t('common.forgotPass').toUpperCase()}
