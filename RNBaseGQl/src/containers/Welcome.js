@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 
 
 const Welcome = (props) => {
-  let isEn = false;
+  let isEn = true;
   const { selectedLanguage } = props;
   let selectedLangValue = selectedLanguage?.lang;
   if (
@@ -42,9 +42,9 @@ const Welcome = (props) => {
   }, []);
 
   useEffect(() => {
-    i18n.changeLanguage(selectedLanguage.lang);
+    i18n.changeLanguage(selectedLanguage?.lang);
 
-  }, [selectedLanguage.lang])
+  }, [selectedLanguage?.lang])
 
 
   const setENLanguage = () => {

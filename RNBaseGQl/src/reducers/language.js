@@ -1,6 +1,6 @@
 import { UPDATE_LANGUAGE } from "../actions/update-language-types";
 
-const initialState = { selectedLanguage: null };
+const initialState = { selectedLanguage: 'en' };
 
 export default function language(state = initialState, action) {
   const { payload, type } = action;
