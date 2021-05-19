@@ -38,6 +38,7 @@
     "react-native-lottie-loader": "0.0.6",
     "react-native-navbar": "^2.1.0",
     "react-native-network-bandwith-speed": "^3.0.0",
+    "react-native-offline": "^5.8.0",
     "react-native-safe-module": "^1.2.0",
     "react-native-screens": "^2.2.0",
     "react-native-toast-message": "^1.4.9",

@@ -38,6 +38,7 @@ class Welcome extends PureComponent {
 
       return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
     }
+    return null;
   }
 
   getNetworkBandwidth = async () => {
@@ -198,8 +199,9 @@ class Welcome extends PureComponent {
 ReactMixin(Welcome.prototype, TimerMixin);
 
 export default connect(
-  ({ language: { selectedLanguage } }) => ({
+  ({ language: { selectedLanguage }, network: { isConnected }, }) => ({
     selectedLanguage,
+    isConnected
   }),
   {
     updateAppLanguage: updateLanguageActions.updateLanguage,

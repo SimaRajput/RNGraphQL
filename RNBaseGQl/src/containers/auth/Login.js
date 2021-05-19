@@ -14,7 +14,6 @@ import { func, shape } from 'prop-types';
 import TimerMixin from 'react-timer-mixin';
 import ReactMixin from 'react-mixin';
 import { connect } from 'react-redux';
-import { ToastActionsCreators } from 'react-native-redux-toast';
 import Toast from 'react-native-toast-message';
 import Regex from '../../utilities/Regex';
 import Constants from '../../constants';
@@ -44,6 +43,7 @@ class Login extends React.Component {
 
       return { isEng: isEng, selectedLangVal: selectedLanguage.lang };
     }
+    return null;
   }
 
   state = {

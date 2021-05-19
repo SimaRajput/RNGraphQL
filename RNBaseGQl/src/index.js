@@ -35,57 +35,27 @@ class src extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      connection_Status: false,
+      connection_Status: true,
     };
+    this.handleNetwork();
+    // store.subscribe(this.handleToast);
   }
 
-  componentDidMount() {
-    this.checkInternetConnectivity();
-  }
-
-  // componentDidUpdate(){
-  //   const {connection_Status} =this.state
-  //   if(connection_Status !== true){
-  //     console.log(connection_Status,"connection_Status")
-  //  this.internertCheck =setInterval(() => {
-  //   console.log(connection_Status,"connection_Status1")
-  //       this.checkInternetConnectivity()
-  //     }, 2000,()=>{
-  //       clearInterval(this.internertCheck)
-  //     });
-  //   }
-  // }
-
-  checkInternetConnectivity() {
-    NetInfo.isConnected.addEventListener(
-      'connectionChange',
-      this._handleConnectivityChange,
-    );
-    NetInfo.isConnected.fetch().done(isConnected => {
-      if (isConnected == true) {
-        this.setState({ connection_Status: true });
-        console.log('stats', this.state.connection_Status);
-      } else {
-        this.setState({ connection_Status: false });
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener(
-      'connectionChange',
-      this._handleConnectivityChange,
-    );
-    clearInterval(this.internertCheck);
-  }
-
-  _handleConnectivityChange = isConnected => {
-    if (isConnected == true) {
-      this.setState({ connection_Status: true });
-    } else {
-      this.setState({ connection_Status: false });
+  handleNetwork = () => {
+    function handleFirstConnectivityChange() {
+      NetInfo.isConnected.removeEventListener('connectionChange', handleFirstConnectivityChange);
     }
+    NetInfo.isConnected.addEventListener('connectionChange', handleFirstConnectivityChange);
+    NetInfo.isConnected.fetch().then(() => { });
   };
+
+  handleToast = () => {
+    const { isConnected } = store.getState().network;
+
+    if (!isConnected) {
+      console.log("no internet");
+    }
+  }
 
   toastConfig = {
     success: ({ text1, props, ...rest }) => (
@@ -102,17 +72,17 @@ class src extends React.Component {
         <View style={styles.container}>
           <Provider store={store}>
             <PersistGate loading={<Loader />} persistor={persistor}>
-              {connection_Status ? (
-                <>
-                  <Root />
-                  <Toast config={this.toastConfig} ref={(ref) => Toast.setRef(ref)} position='bottom' />
-                </>
-              ) : (
+              {/* {connection_Status ? ( */}
+              <>
+                <Root />
+                <Toast config={this.toastConfig} ref={(ref) => Toast.setRef(ref)} position='bottom' />
+              </>
+              {/* ) : (
                 <NoInternet
                   title={'Lost Internet Connection'}
                   message={'Please connect your internet connection'}
                 />
-              )}
+              )} */}
             </PersistGate>
           </Provider>
         </View>
