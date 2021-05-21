@@ -3,7 +3,7 @@ import { Image, StyleSheet } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Constants from '../constants';
 import Home from './home';
-import Messages from './messages';
+import {Messages} from './messages';
 import More from './more';
 import Profile from './profile';
 

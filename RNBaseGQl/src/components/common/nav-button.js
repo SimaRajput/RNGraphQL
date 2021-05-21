@@ -6,23 +6,23 @@ import Constants from '../../constants';
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    alignSelf: 'center',
     backgroundColor: Constants.Colors.TRANSPARENT,
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginLeft: (Constants.BaseStyle.DEVICE_WIDTH / 100) * 2,
+    backgroundColor:Constants.Colors.BUTTON_COLOR,
+    paddingVertical:15
   },
   iconStyle: {
     height: (Constants.BaseStyle.DEVICE_WIDTH / 100) * 6,
     width: (Constants.BaseStyle.DEVICE_WIDTH / 100) * 6,
+    tintColor:Constants.Colors.WHITE
   },
   textStyle: {
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: Constants.Colors.TRANSPARENT,
-    color: Constants.Colors.BLACK,
+    color: Constants.Colors.WHITE,
     justifyContent: 'center',
-    marginLeft: (Constants.BaseStyle.DEVICE_WIDTH / 100) * 1,
+    marginLeft: (Constants.BaseStyle.DEVICE_WIDTH / 100) * 2,
     textAlign: 'left',
     ...Constants.Fonts.large,
   },
