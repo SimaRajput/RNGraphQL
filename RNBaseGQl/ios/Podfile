@@ -13,6 +13,8 @@ target 'RNBaseGQl' do
   )
 
 
+  pod 'RealmJS', :path => '../node_modules/realm'
+
   target 'RNBaseGQlTests' do
     inherit! :complete
     # Pods for testing
