@@ -46,12 +46,14 @@ const styles = StyleSheet.create({
   }
 });
 
-var db = openDatabase({ name: 'UserDatabase.db' });
+
 
 const Register = ({ navigation }) => {
   let [userName, setUserName] = useState('');
   let [userContact, setUserContact] = useState('');
   let [userAddress, setUserAddress] = useState('');
+
+  var db = openDatabase({ name: 'UserDatabase.db',createFromLocation : "~example.db", location: 'Library' } ,openCB, errorCB);
 
   const register_user = () => {
     console.log(userName, userContact, userAddress);
@@ -101,6 +103,20 @@ const Register = ({ navigation }) => {
       }
     });
   };
+
+
+  const errorCB=(err)=> {
+    console.log("SQL Error: " + err);
+  }
+
+  const successCB=()=> {
+    console.log("SQL executed fine");
+  }
+
+  const openCB=()=> {
+    console.log("Database OPENED");
+  }
+
 
   return (
     <SafeAreaView style={styles.main}>

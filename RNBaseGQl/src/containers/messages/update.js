@@ -12,7 +12,7 @@ import Constants from '../../constants';
 
 import { openDatabase } from 'react-native-sqlite-storage';
 
-var db = openDatabase({ name: 'Demo.db' });
+var db = openDatabase({ name: 'UserDatabase.db' });
 
 
 const styles = StyleSheet.create({

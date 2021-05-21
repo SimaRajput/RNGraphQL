@@ -4,8 +4,7 @@ import { openDatabase } from 'react-native-sqlite-storage';
 import Constants from '../../constants';
 import { NavButton } from '../../components';
 
-var db = openDatabase({ name: 'UserDatabase.db' });
-console.log(db,'db')
+
 
 const styles = StyleSheet.create({
     container: {
@@ -40,12 +39,28 @@ const User = ({ navigation }) => {
     let [flatListItems, setFlatListItems] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
+
+  const errorCB=(err)=> {
+    console.log("SQL Error: " + err);
+  }
+
+  const successCB=()=> {
+    console.log("SQL executed fine");
+  }
+
+  const openCB=(res)=> {
+    console.log("Database OPENED",res);
+  }
+
+    var db = openDatabase({ name: 'UserDatabase.db' },openCB, errorCB);
+console.log(db,'db')
+
     useEffect(() => {
         onRefresh();
     }, []);
 
 
-    const onRefresh = React.useCallback(async () => {
+    const onRefresh =  () => {
         db.transaction((tx) => {
             tx.executeSql('SELECT * FROM table_user', [], (tx, results) => {
                 console.log('result',results)
@@ -56,7 +71,7 @@ const User = ({ navigation }) => {
                 setRefreshing(false)
             });
         });
-    }, [refreshing]);
+    };
 
     let listViewItemSeparator = () => {
         return (
@@ -65,6 +80,9 @@ const User = ({ navigation }) => {
             />
         );
     };
+
+
+
 
     let listItemView = (item) => {
         return (
